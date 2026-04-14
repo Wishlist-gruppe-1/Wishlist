@@ -1,5 +1,6 @@
 package com.johanoliverlarsen.wishlist.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class Wish {
     private String description;
     private String location;
     private LocalDate date;
-    private double price;
+    private BigDecimal price;
     private String url;
     private List<String> tag;
 
@@ -18,7 +19,7 @@ public class Wish {
     }
 
     public Wish(int wishId, String title, String description, String location,
-                LocalDate date, double price, String url, List<String> tag) {
+                LocalDate date, BigDecimal price, String url, List<String> tag) {
         this.wishId = wishId;
         this.title = title;
         this.description = description;
@@ -34,7 +35,7 @@ public class Wish {
     public String getDescription() { return description; }
     public String getLocation() { return location; }
     public LocalDate getDate() { return date; }
-    public double getPrice() { return price; }
+    public BigDecimal getPrice() { return price; }
     public String getUrl() { return url; }
     public List<String> getTag() { return tag; }
 
@@ -43,7 +44,7 @@ public class Wish {
     public void setDescription(String description) { this.description = description; }
     public void setLocation(String location) { this.location = location; }
     public void setDate(LocalDate date) { this.date = date; }
-    public void setPrice(double price) { this.price = price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
     public void setUrl(String url) { this.url = url; }
     public void setTag(List<String> tag) { this.tag = tag; }
 

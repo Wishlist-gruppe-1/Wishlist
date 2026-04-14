@@ -3,8 +3,12 @@ package com.johanoliverlarsen.wishlist.repository;
 import com.johanoliverlarsen.wishlist.model.Wish;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -17,7 +21,7 @@ public class WishRepository {
                     rs.getString("description"),
                     rs.getString("location"),
                     rs.getDate("date").toLocalDate(),
-                    rs.getDouble("price"),
+                    rs.getBigDecimal("price"),
                     rs.getString("url"),
                     null // tags sættes bagefter
             );
@@ -55,17 +59,54 @@ public class WishRepository {
     }
 
     public Wish findById(int id) {
-        Wish w = new Wish(1, "Hej Hej", null, null, null, 0.0, null, null);
+        String sql = """
+                SELECT * FROM wish
+                WHERE wish_id = ?
+                ORDER BY wish_id
+                """;
+        Wish w = jdbcTemplate.queryForObject(sql, wishRowMapper, id);
+        attachTags(List.of(w));
         return w;
     }
 
-    public String findAllTags() {
-        return null;
+    public List<String> findAllTags() {
+        String sql = """
+                SELECT t.title FROM tag t
+                ORDER BY t.tag_id
+                """;
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 
-    public String insert(Wish wish) {
-        return null;
+    public Wish insert(Wish wish, int wishListId) {
+        String sql = """
+                INSERT INTO wish (title, description, location, date, price, url)
+                
+                """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+           PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+           ps.setString(1, wish.getTitle());
+           ps.setString(2, wish.getDescription());
+           ps.setString(3, wish.getLocation());
+           ps.setDate(4, wish.getDate() != null ? java.sql.Date.valueOf(wish.getDate()) : null);
+           ps.setBigDecimal(5, wish.getPrice());
+           ps.setString(6, wish.getUrl());
+           ps.setInt(7, wishListId);
+           return ps;
+        }, keyHolder);
+
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new IllegalStateException("Failed to retrieve generated id.");
+        }
+
+        return new Wish(key.intValue(), wish.getTitle(), wish.getDescription(), wish.getLocation(), wish.getDate(),
+                wish.getPrice(), wish.getUrl(), null);
     }
+
+
 
     public boolean update(Wish wish) {
         return false;
