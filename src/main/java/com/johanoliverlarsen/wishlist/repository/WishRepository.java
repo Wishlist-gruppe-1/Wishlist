@@ -51,18 +51,18 @@ public class WishRepository {
 
     //Er i tvivl om det overhovedet giver mening at have nedenstående - vi kommer ikke til at skulle liste ønsker
     // på tværs af brugere
-    public List<Wish> findAll() {
-        String sql = """
-                SELECT * FROM wish
-                """;
-        return jdbcTemplate.query(sql, wishRowMapper);
-    }
+
+//    public List<Wish> findAll() {
+//        String sql = """
+//                SELECT * FROM wish
+//                """;
+//        return jdbcTemplate.query(sql, wishRowMapper);
+//    }
 
     public Wish findById(int id) {
         String sql = """
                 SELECT * FROM wish
                 WHERE wish_id = ?
-                ORDER BY wish_id
                 """;
         Wish w = jdbcTemplate.queryForObject(sql, wishRowMapper, id);
         attachTags(List.of(w));
@@ -79,8 +79,8 @@ public class WishRepository {
 
     public Wish insert(Wish wish, int wishListId) {
         String sql = """
-                INSERT INTO wish (title, description, location, date, price, url)
-                
+                INSERT INTO wish (title, description, location, date, price, url, wishlist_id)
+                VALUES(?, ?, ?, ?, ?, ?, ?)
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -102,14 +102,38 @@ public class WishRepository {
             throw new IllegalStateException("Failed to retrieve generated id.");
         }
 
-        return new Wish(key.intValue(), wish.getTitle(), wish.getDescription(), wish.getLocation(), wish.getDate(),
-                wish.getPrice(), wish.getUrl(), null);
+        insertTags(key.intValue(), wish.getTag());
+
+        return new Wish(
+                key.intValue(),
+                wish.getTitle(),
+                wish.getDescription(),
+                wish.getLocation(),
+                wish.getDate(),
+                wish.getPrice(),
+                wish.getUrl(),
+                wish.getTag());
+    }
+
+    public void insertTags(int id, List<String> tags) {
+        String sql = """
+                INSERT INTO wish_tag (wish_id, tag_id)
+                SELECT ?, tag_id FROM tag WHERE title = ?
+                """;
+
+        for (String t : tags) {
+            jdbcTemplate.update(sql, id, t);
+        }
     }
 
 
 
     public boolean update(Wish wish) {
-        return false;
+//        String sql = """
+//                UPDATE
+//                """,
+//        int rowsUpdated = jdbcTemplate.update()
+                return false;
     }
 
     public boolean deleteById(int id) {

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Wish {
-    private int wishId;
+    private Integer wishId;
     private String title;
     private String description;
     private String location;
@@ -18,7 +18,7 @@ public class Wish {
         //tom konstruktør
     }
 
-    public Wish(int wishId, String title, String description, String location,
+    public Wish(Integer wishId, String title, String description, String location,
                 LocalDate date, BigDecimal price, String url, List<String> tag) {
         this.wishId = wishId;
         this.title = title;
@@ -30,7 +30,7 @@ public class Wish {
         this.tag = tag;
     }
 
-    public int getWishId() { return wishId; }
+    public Integer getWishId() { return wishId; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public String getLocation() { return location; }
@@ -39,7 +39,7 @@ public class Wish {
     public String getUrl() { return url; }
     public List<String> getTag() { return tag; }
 
-    public void setWishId(int wishId) { this.wishId = wishId; }
+    public void setWishId(Integer wishId) { this.wishId = wishId; }
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
     public void setLocation(String location) { this.location = location; }
