@@ -1,6 +1,6 @@
-package Service;
+package com.johanoliverlarsen.wishlist.service;
 
-import Repository.WishRepository;
+import com.johanoliverlarsen.wishlist.repository.WishRepository;
 import org.springframework.stereotype.Service;
 
 @Service

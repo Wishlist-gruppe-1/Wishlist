@@ -1,4 +1,4 @@
-package Exeption;
+package com.johanoliverlarsen.wishlist.exception;
 
 public class WishNotFoundException extends RuntimeException {
     public WishNotFoundException(String message) {

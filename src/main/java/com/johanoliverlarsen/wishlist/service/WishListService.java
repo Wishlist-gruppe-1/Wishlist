@@ -1,4 +1,4 @@
-package Service;
+package com.johanoliverlarsen.wishlist.service;
 
 
 import org.springframework.stereotype.Service;
