@@ -1,4 +1,4 @@
-package Controller;
+package com.johanoliverlarsen.wishlist.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
