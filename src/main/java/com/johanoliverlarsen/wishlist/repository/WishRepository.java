@@ -13,9 +13,13 @@ public class WishRepository {
     private RowMapper<Wish> wishRowMapper = (rs, rowNum) ->
             new Wish(
                     rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("password")
+                    rs.getString("title"),
+                    rs.getString("description"),
+                    rs.getString("location"),
+                    rs.getDate("date"),
+                    rs.getDouble("price"),
+                    rs.getString("url"),
+                    rs.getArray("tag")
             );
 
     public WishRepository(JdbcTemplate jdbcTemplate) {
