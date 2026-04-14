@@ -21,22 +21,22 @@ public class WishController {
      */
 
     
-
-    @GetMapping()
-    public String home() {
-
-    }
-
-
-    @GetMapping()
-    public String getAllWishes() {
-
-
-    }
-
-    @GetMapping("/{title}")
-    public String getWishByTitle() {
-
-    }
+//
+//    @GetMapping()
+//    public String home() {
+//
+//    }
+//
+//
+//    @GetMapping()
+//    public String getAllWishes() {
+//
+//
+//    }
+//
+//    @GetMapping("/{title}")
+//    public String getWishByTitle() {
+//
+//    }
 
 }
