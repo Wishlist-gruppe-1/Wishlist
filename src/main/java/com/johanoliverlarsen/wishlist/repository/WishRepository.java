@@ -30,6 +30,30 @@ public class WishRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+
+    //Er i tvivl om det overhovedet giver mening at have nedenstående - vi kommer ikke til at skulle liste ønsker
+    // på tværs af brugere
+
+    public List<Wish> findAllByWishListId(int wishListId) {
+        String sql = """
+                SELECT * FROM wish.w
+                WHERE w.wishlist_id = ?
+                ORDER BY w.wish_id
+                """;
+        return jdbcTemplate.query(sql, wishRowMapper, wishListId);
+    }
+
+    public Wish findById(int id) {
+        String sql = """
+                SELECT * FROM wish
+                WHERE wish_id = ?
+                """;
+        Wish w = jdbcTemplate.queryForObject(sql, wishRowMapper, id);
+        attachTags(List.of(w));
+        return w;
+    }
+
     private List<String> findTagsById(int id) {
         String sql = """
                 SELECT t.title
@@ -47,26 +71,6 @@ public class WishRepository {
             List<String> tag = findTagsById(w.getWishId());
             w.setTag(tag);
         }
-    }
-
-    //Er i tvivl om det overhovedet giver mening at have nedenstående - vi kommer ikke til at skulle liste ønsker
-    // på tværs af brugere
-
-//    public List<Wish> findAll() {
-//        String sql = """
-//                SELECT * FROM wish
-//                """;
-//        return jdbcTemplate.query(sql, wishRowMapper);
-//    }
-
-    public Wish findById(int id) {
-        String sql = """
-                SELECT * FROM wish
-                WHERE wish_id = ?
-                """;
-        Wish w = jdbcTemplate.queryForObject(sql, wishRowMapper, id);
-        attachTags(List.of(w));
-        return w;
     }
 
     public List<String> findAllTags() {

@@ -30,32 +30,32 @@ public class ProfileController {
 
     @GetMapping()
     public String list(Model model) {
-
+        return null;
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-
+        return null;
     }
 
     @PostMapping
     public String create(@ModelAttribute Profile profile, Model model) {
-
+        return null;
     }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable int id, Model model) {
-
+        return null;
     }
 
     @PostMapping("/{id}")
     public String update(@PathVariable int id, @ModelAttribute Profile profile, Model model) {
-
+        return null;
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable int id) {
-
+        return null;
     }
 
 
