@@ -115,7 +115,7 @@ public class WishRepository {
                 wish.getTag());
     }
 
-    public void insertTags(int id, List<String> tags) {
+    private void insertTags(int id, List<String> tags) {
         String sql = """
                 INSERT INTO wish_tag (wish_id, tag_id)
                 SELECT ?, tag_id FROM tag WHERE title = ?
@@ -126,18 +126,51 @@ public class WishRepository {
         }
     }
 
+    private void deleteTags(int id) {
+        String sql = """
+                DELETE FROM wish_tag WHERE wish_id = ?;
+                """;
+
+            jdbcTemplate.update(sql, id);
+    }
 
 
     public boolean update(Wish wish) {
-//        String sql = """
-//                UPDATE
-//                """,
-//        int rowsUpdated = jdbcTemplate.update()
-                return false;
+        String sql = """
+                    UPDATE wish w
+                        SET w.title = ?,
+                         w.description = ?,
+                         w.location = ?,
+                         w.date = ?,
+                         w.price = ?,
+                         w.url = ?
+                     WHERE w.wish_id = ?
+                """;
+        int rowsUpdated = jdbcTemplate.update(
+                sql,
+                wish.getTitle(),
+                wish.getDescription(),
+                wish.getLocation(),
+                wish.getDate(),
+                wish.getPrice(),
+                wish.getUrl(),
+                wish.getWishId()
+        );
+
+        deleteTags(wish.getWishId());
+        insertTags(wish.getWishId(), wish.getTag());
+
+        return rowsUpdated > 0;
     }
 
     public boolean deleteById(int id) {
-        return false;
+        String sql = """
+                DELETE FROM wish w
+                WHERE w.wish_id = ?
+                """;
+
+        int rowsDeleted = jdbcTemplate.update(sql, id);
+        return rowsDeleted > 0;
     }
 
 }
