@@ -9,6 +9,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -42,31 +44,66 @@ public class WishListRepository {
 //
     public WishList insert(WishList wishlist, int profile_id){
         String sql = """
-         INSERT INTO wishlist (wishlist_id, title, description, profile_id)VALUES 
-         (?, ?, ?, ?);
+         INSERT INTO wishlist (title, description, profile_id)VALUES 
+         (?, ?, ?);
         """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection-> {
-            var ps = connection.prepareStatement(sql, new String[]{"profile_id"});
-            ps.setString(1, WishList.getTitle());
-            ps.setString(2, WishList.getDescription());
-            ps.setInt(3, WishList.getWishListId());
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, wishlist.getTitle());
+            ps.setString(2, wishlist.getDescription());
+            ps.setInt(3, profile_id);
             return ps;
         }, keyHolder);
 
-        })
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new IllegalStateException("Failed to retrieve generated id.");
+        }
 
-
+        return new WishList(
+                key.intValue(),
+                wishlist.getTitle(),
+                wishlist.getDescription());
     }
-//
-//    public boolean update(WishList wishlist){
-//    }
-//
-//    public boolean deleteById(int wishListId){
-//    }
-//
+
+
+    public boolean update(WishList wishlist){
+        String sql = """
+        UPDATE wishlist
+        SET title = ?, description = ?
+        WHERE wishlist_id = ?
+        """;
+
+        int rowsUpdated = jdbcTemplate.update(connection -> {
+            var ps = connection.prepareStatement(sql);
+            ps.setString(1, wishlist.getTitle());
+            ps.setString(2, wishlist.getDescription());
+            ps.setInt(3, wishlist.getWishListId());
+            return ps;
+        });
+
+        return rowsUpdated > 0;
+    }
+
+
+    public boolean deleteById(int wishListId){
+        String sql = """
+        DELETE FROM wishlist
+        WHERE wishlist_id = ?
+        """;
+
+        int rowsDeleted = jdbcTemplate.update(connection -> {
+         var ps = connection.prepareStatement(sql);
+         ps.setInt(1, wishListId);
+         return ps;
+        });
+
+        return rowsDeleted > 0;
+    }
+
 
 
 
