@@ -3,8 +3,12 @@ package com.johanoliverlarsen.wishlist.repository;
 import com.johanoliverlarsen.wishlist.model.Wish;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -12,48 +16,161 @@ public class WishRepository {
     private final JdbcTemplate jdbcTemplate;
     private RowMapper<Wish> wishRowMapper = (rs, rowNum) ->
             new Wish(
-                    rs.getInt("id"),
+                    rs.getInt("wish_id"),
                     rs.getString("title"),
                     rs.getString("description"),
                     rs.getString("location"),
-                    rs.getDate("date"),
-                    rs.getDouble("price"),
+                    rs.getDate("date").toLocalDate(),
+                    rs.getBigDecimal("price"),
                     rs.getString("url"),
-                    rs.getArray("tag")
+                    null // tags sættes bagefter
             );
 
     public WishRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Wish> findAll() {
+    private List<String> findTagsById(int id) {
         String sql = """
-                SELECT id, name, email, password
-                """
+                SELECT t.title
+                	FROM wish_tag wt
+                    JOIN tag t
+                    ON wt.tag_id = t.tag_id
+                    WHERE wish_id = ?
+                    ORDER BY wt.tag_id
+                """;
+        return jdbcTemplate.queryForList(sql, String.class, id);
     }
 
-    public List<Wish> findById(){
-//return null
+    private void attachTags(List<Wish> wishes) {
+        for (Wish w : wishes) {
+            List<String> tag = findTagsById(w.getWishId());
+            w.setTag(tag);
+        }
     }
 
-    public Wish findAllByProfileId() {
-        //return null
+    //Er i tvivl om det overhovedet giver mening at have nedenstående - vi kommer ikke til at skulle liste ønsker
+    // på tværs af brugere
+
+//    public List<Wish> findAll() {
+//        String sql = """
+//                SELECT * FROM wish
+//                """;
+//        return jdbcTemplate.query(sql, wishRowMapper);
+//    }
+
+    public Wish findById(int id) {
+        String sql = """
+                SELECT * FROM wish
+                WHERE wish_id = ?
+                """;
+        Wish w = jdbcTemplate.queryForObject(sql, wishRowMapper, id);
+        attachTags(List.of(w));
+        return w;
     }
 
-    public String findAllTags(){
-//return null
+    public List<String> findAllTags() {
+        String sql = """
+                SELECT t.title FROM tag t
+                ORDER BY t.tag_id
+                """;
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 
-    public String insert(Wish wish) {
+    public Wish insert(Wish wish, int wishListId) {
+        String sql = """
+                INSERT INTO wish (title, description, location, date, price, url, wishlist_id)
+                VALUES(?, ?, ?, ?, ?, ?, ?)
+                """;
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+           PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+           ps.setString(1, wish.getTitle());
+           ps.setString(2, wish.getDescription());
+           ps.setString(3, wish.getLocation());
+           ps.setDate(4, wish.getDate() != null ? java.sql.Date.valueOf(wish.getDate()) : null);
+           ps.setBigDecimal(5, wish.getPrice());
+           ps.setString(6, wish.getUrl());
+           ps.setInt(7, wishListId);
+           return ps;
+        }, keyHolder);
+
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new IllegalStateException("Failed to retrieve generated id.");
+        }
+
+        insertTags(key.intValue(), wish.getTag());
+
+        return new Wish(
+                key.intValue(),
+                wish.getTitle(),
+                wish.getDescription(),
+                wish.getLocation(),
+                wish.getDate(),
+                wish.getPrice(),
+                wish.getUrl(),
+                wish.getTag());
     }
+
+    private void insertTags(int id, List<String> tags) {
+        String sql = """
+                INSERT INTO wish_tag (wish_id, tag_id)
+                SELECT ?, tag_id FROM tag WHERE title = ?
+                """;
+
+        for (String t : tags) {
+            jdbcTemplate.update(sql, id, t);
+        }
+    }
+
+    private void deleteTags(int id) {
+        String sql = """
+                DELETE FROM wish_tag WHERE wish_id = ?;
+                """;
+
+            jdbcTemplate.update(sql, id);
+    }
+
 
     public boolean update(Wish wish) {
+        String sql = """
+                    UPDATE wish w
+                        SET w.title = ?,
+                         w.description = ?,
+                         w.location = ?,
+                         w.date = ?,
+                         w.price = ?,
+                         w.url = ?
+                     WHERE w.wish_id = ?
+                """;
+        int rowsUpdated = jdbcTemplate.update(
+                sql,
+                wish.getTitle(),
+                wish.getDescription(),
+                wish.getLocation(),
+                wish.getDate(),
+                wish.getPrice(),
+                wish.getUrl(),
+                wish.getWishId()
+        );
 
+        deleteTags(wish.getWishId());
+        insertTags(wish.getWishId(), wish.getTag());
+
+        return rowsUpdated > 0;
     }
 
     public boolean deleteById(int id) {
+        String sql = """
+                DELETE FROM wish w
+                WHERE w.wish_id = ?
+                """;
 
+        int rowsDeleted = jdbcTemplate.update(sql, id);
+        return rowsDeleted > 0;
     }
 
 }
