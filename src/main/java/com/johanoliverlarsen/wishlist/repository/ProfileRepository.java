@@ -16,7 +16,7 @@ public class ProfileRepository {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Profile> profileRowMapper = (rs, rowNum) ->
         new Profile(
-                rs.getInt("id"),
+                rs.getInt("profile_id"),
                 rs.getString("name"),
                 rs.getString("email"),
                 rs.getString("password")
@@ -28,18 +28,18 @@ public class ProfileRepository {
 
     public List<Profile> findAll() {
         String sql = """
-                SELECT id, name, email, password
-                FROM profiles
-                ORDER BY id
+                SELECT profile_id, name, email, password
+                FROM profile
+                ORDER BY profile_id
                 """;
         return jdbcTemplate.query(sql, profileRowMapper);
     }
 
-    public Profile findById(int id) {
+    public Profile findById(Integer id) {
         String sql = """
-                SELECT id, name, email, password
-                FROM profiles
-                WHERE id = ?
+                SELECT profile_id, name, email, password
+                FROM profile
+                WHERE profile_id = ?
                 """;
        List<Profile> results = jdbcTemplate.query(sql, profileRowMapper, id);
        if(results.isEmpty()) {
@@ -50,8 +50,8 @@ public class ProfileRepository {
 
     public Profile findByEmail(String email) {
         String sql = """
-                SELECT id, name, email, password
-                FROM profiles
+                SELECT profile_id, name, email, password
+                FROM profile
                 WHERE email = ?
                 """;
         List<Profile> results = jdbcTemplate.query(sql, profileRowMapper, email);
@@ -64,7 +64,7 @@ public class ProfileRepository {
 
     public Profile insert(Profile profile) {
         String sql = """
-                INSERT INTO profiles (name,email, password)
+                INSERT INTO profile (name,email, password)
                 VALUES (?, ?, ?)
                 """;
 
@@ -80,7 +80,7 @@ public class ProfileRepository {
 
         Number key = keyHolder.getKey();
         if (key == null) {
-            throw new IllegalStateException("Failed to retrieve generated id.");
+            throw new IllegalStateException("Kunne ikke hente id");
         }
 
         return new Profile(key.intValue(), profile.getName(), profile.getEmail(), profile.getPassword());
@@ -88,9 +88,9 @@ public class ProfileRepository {
 
     public boolean update(Profile profile) {
         String sql = """
-            UPDATE profiles
+            UPDATE profile
             SET name = ?, email = ?, password = ?
-            WHERE id = ?
+            WHERE profile_id = ?
             """;
 
         int rowsUpdated = jdbcTemplate.update(
@@ -104,10 +104,10 @@ public class ProfileRepository {
         return rowsUpdated > 0;
     }
 
-    public boolean deleteById(int id) {
+    public boolean deleteById(Integer id) {
         String sql = """
-            DELETE FROM profiles
-            WHERE id = ?
+            DELETE FROM profile
+            WHERE profile_id = ?
             """;
         int rowsDeleted = jdbcTemplate.update(sql, id);
         return rowsDeleted > 0;
