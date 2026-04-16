@@ -1,7 +1,7 @@
 package com.johanoliverlarsen.wishlist.exception;
 
 public class WishListNotFoundException extends RuntimeException {
-    public WishListNotFoundException(String message) {
-        super(message);
+    public WishListNotFoundException(int id) {
+        super("Listen med id " + id + " kunne ikke findes.");
     }
 }

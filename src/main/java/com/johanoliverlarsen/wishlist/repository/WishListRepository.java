@@ -1,6 +1,7 @@
 package com.johanoliverlarsen.wishlist.repository;
 
 
+import com.johanoliverlarsen.wishlist.exception.WishListNotFoundException;
 import com.johanoliverlarsen.wishlist.model.Wish;
 import com.johanoliverlarsen.wishlist.model.WishList;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,9 +28,6 @@ public class WishListRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-//    public List<WishList> findAll(){
-//    }
-
     public WishList findById(int id){
         String sql = """
                 SELECT w.wishlist_id, w.title, w.description
@@ -39,9 +37,26 @@ public class WishListRepository {
         return jdbcTemplate.queryForObject(sql, wishListRowMapper, id);
     }
 
-//    public List <WishList> findAllByProfileId(int profileId){
-//    }
-//
+    public List <WishList> findAllByProfileId(int profileId){
+        String sql = """
+               SELECT w.wishlist_id, w.title, w.description
+               FROM wishlist w
+               WHERE w.profile_id = ?
+               """;
+
+        List<WishList> wishLists = jdbcTemplate.query(connection -> {
+            var ps = connection.prepareStatement(sql);
+            ps.setInt(1, profileId);
+            return ps;
+        }, wishListRowMapper);
+
+        if (wishLists.isEmpty()) {
+            throw new WishListNotFoundException("Ingen wishlists fundet for profil med id " + profileId);
+        }
+
+        return wishLists;
+    }
+
     public WishList insert(WishList wishlist, int profile_id){
         String sql = """
          INSERT INTO wishlist (title, description, profile_id)VALUES 
@@ -103,9 +118,5 @@ public class WishListRepository {
 
         return rowsDeleted > 0;
     }
-
-
-
-
 
 }
