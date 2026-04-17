@@ -1,4 +1,6 @@
 package com.johanoliverlarsen.wishlist.controller;
+import com.johanoliverlarsen.wishlist.exception.DuplicateProfileException;
+import com.johanoliverlarsen.wishlist.exception.InvalidProfileException;
 import com.johanoliverlarsen.wishlist.model.Profile;
 import com.johanoliverlarsen.wishlist.service.ProfileService;
 import org.springframework.stereotype.Controller;
@@ -30,36 +32,73 @@ public class ProfileController {
 
     @GetMapping()
     public String list(Model model) {
-        return null;
+        model.addAttribute("profiles", profileService.findAll());
+        return "profiles/profile-list";
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        return null;
+        model.addAttribute("profile", new Profile());
+        model.addAttribute("formTitle", "Opret profil");
+        model.addAttribute("formAction", "/profile");
+        model.addAttribute("submitLabel", "Opret");
+
+        return "profiles/profile-form";
     }
 
     @PostMapping
     public String create(@ModelAttribute Profile profile, Model model) {
-        return null;
+        try {
+            profileService.create(profile);
+            return "redirect:/profil";
+        } catch (InvalidProfileException | DuplicateProfileException ex) {
+            model.addAttribute("profile", profile);
+            model.addAttribute("formTitle", "Opret profil");
+            model.addAttribute("formAction", "/profile");
+            model.addAttribute("submitLabel", "Opret");
+            model.addAttribute("errorMessage", ex.getMessage());
+
+            return "profiles/profile-form";
+        }
     }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable int id, Model model) {
-        return null;
+        Profile profile = profileService.findById(id);
+        model.addAttribute("formTitle", "Rediger profil");
+        model.addAttribute("formAction", "/profile/" + id);
+        model.addAttribute("submitLabel", "Opdater");
+        model.addAttribute("profile", profile);
+
+        return "profiles/profile-form";
     }
 
     @PostMapping("/{id}")
     public String update(@PathVariable int id, @ModelAttribute Profile profile, Model model) {
-        return null;
+        try {
+            profileService.update(id, profile);
+            return "redirect:/profil";
+        } catch (InvalidProfileException | DuplicateProfileException ex) {
+            profile.setProfileId(id);
+            model.addAttribute("profile", profile);
+            model.addAttribute("formTitle", "Rediger profil");
+            model.addAttribute("formAction", "/profile/" + id);
+            model.addAttribute("submitLabel", "Opdater");
+            model.addAttribute("errorMessage", ex.getMessage());
+
+            return "profiles/profile-form";
+        }
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable int id) {
-        return null;
+        profileService.deleteById(id);
+        return "redirect:/profil";
     }
-
-
-
-
-
 }
+
+
+
+
+
+

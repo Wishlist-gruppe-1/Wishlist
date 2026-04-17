@@ -125,7 +125,7 @@ public class ProfileService {
         validateEmail(email);
 
         Profile profile = profileRepository.findByEmail(email);
-        if (profile == null && profile.getPassword().equals(password)) {
+        if (profile != null && profile.getPassword().equals(password)) {
             return profile;
         }
         throw new InvalidProfileException("Forkert email eller adgangskode.");
@@ -155,7 +155,7 @@ public class ProfileService {
         }catch (DataIntegrityViolationException ex) {
             throw new DuplicateProfileException("Navn eller email findes allerede");
         }catch (DataAccessException ex) {
-            throw new DatabaseOperationException("Fejl, kunne ikke oprette bruger", ex);
+            throw new DatabaseOperationException("Fejl, kunne ikke opdatere bruger", ex);
         }
     }
 
@@ -192,7 +192,7 @@ public class ProfileService {
         if (name == null || name.isBlank()) {
             throw new InvalidProfileException("Navn erl nødvendigt.");
         }
-        if (name.length()>100) {
+        if (name.length()>50) {
             throw new InvalidProfileException("Navn må ikke overskride 100 karakter.");
         }
 
