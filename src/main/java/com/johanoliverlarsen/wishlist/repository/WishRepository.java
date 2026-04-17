@@ -180,4 +180,6 @@ public class WishRepository {
         return rowsDeleted > 0;
     }
 
+    //test
+
 }
