@@ -193,7 +193,7 @@ public class ProfileService {
             throw new InvalidProfileException("Navn erl nødvendigt.");
         }
         if (name.length()>50) {
-            throw new InvalidProfileException("Navn må ikke overskride 100 karakter.");
+            throw new InvalidProfileException("Navn må ikke overskride 50 karakter.");
         }
 
         validateEmail(profile.getEmail());
