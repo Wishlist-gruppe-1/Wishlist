@@ -53,7 +53,7 @@ public class WishListRepository {
         }, wishListRowMapper);
 
         if (wishLists.isEmpty()) {
-            throw new WishListNotFoundException("Ingen wishlists fundet for profil med id " + profileId);
+            throw new WishListNotFoundException(profileId);
         }
 
         return wishLists;
