@@ -4,7 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class WishServiceTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class WishListServiceTest {
+
     @BeforeEach
     void setUp() {
     }
@@ -18,15 +21,11 @@ public class WishServiceTest {
     }
 
     @Test
-    void findAllByWishListId() {
+    void findAllByProfileId() {
     }
 
     @Test
     void create() {
-    }
-
-    @Test
-    void findAllTags() {
     }
 
     @Test
