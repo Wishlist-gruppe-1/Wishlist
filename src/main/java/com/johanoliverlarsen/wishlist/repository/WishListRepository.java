@@ -37,25 +37,25 @@ public class WishListRepository {
         return jdbcTemplate.queryForObject(sql, wishListRowMapper, id);
     }
 
-    public List <WishList> findAllByProfileId(int profileId){
-        String sql = """
-               SELECT w.wishlist_id, w.title, w.description
-               FROM wishlist w
-               WHERE w.profile_id = ?
-               """;
-
-        List<WishList> wishLists = jdbcTemplate.query(connection -> {
-            var ps = connection.prepareStatement(sql);
-            ps.setInt(1, profileId);
-            return ps;
-        }, wishListRowMapper);
-
-        if (wishLists.isEmpty()) {
-            throw new WishListNotFoundException("Ingen wishlists fundet for profil med id " + profileId);
-        }
-
-        return wishLists;
-    }
+//    public List <WishList> findAllByProfileId(int profileId){
+//        String sql = """
+//               SELECT w.wishlist_id, w.title, w.description
+//               FROM wishlist w
+//               WHERE w.profile_id = ?
+//               """;
+//
+//        List<WishList> wishLists = jdbcTemplate.query(connection -> {
+//            var ps = connection.prepareStatement(sql);
+//            ps.setInt(1, profileId);
+//            return ps;
+//        }, wishListRowMapper);
+//
+//        if (wishLists.isEmpty()) {
+//            throw new WishListNotFoundException("Ingen wishlists fundet for profil med id " + profileId);
+//        }
+//
+//        return wishLists;
+//    }
 
     public WishList insert(WishList wishlist, int profile_id){
         String sql = """
