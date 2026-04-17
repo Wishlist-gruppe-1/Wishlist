@@ -107,6 +107,6 @@ public class WishListController {
       wishListService.deleteById(id);
       return "redirect:/wishlists/";
     }
-
+//tihi
 
 }
