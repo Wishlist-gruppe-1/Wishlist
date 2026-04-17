@@ -31,8 +31,8 @@ Projektet er i en alpha udgave med et ambitiøs mål om at engang komme ud i den
 ## Installation
 
 ```
-git clone (link her)
-cd (projektnavn)
+git clone https://github.com/Wishlist-gruppe-1/Wishlist#
+cd Wishlist
 mvn spring-boot:run
 ```
 
