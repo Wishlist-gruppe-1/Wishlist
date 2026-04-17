@@ -23,7 +23,7 @@ public class WishListController {
     public String list(HttpSession session, Model model) {
         Integer profileId = (Integer) session.getAttribute("profileId");
         if(profileId == null){
-        return "redirect:/login";
+            return "redirect:/login";
         }
         model.addAttribute("wishlists", wishListService.findAllByProfileId(profileId));
         return "wishlists/wishlist-list";
@@ -31,9 +31,9 @@ public class WishListController {
 
     @GetMapping("/create")
     public String showCreateForm(HttpSession session, Model model) {
-         if (session.getAttribute("profileId") == null) {
-             return "redirect:/login";
-         }
+        if (session.getAttribute("profileId") == null) {
+            return "redirect:/login";
+        }
 
         model.addAttribute("wishlist", new WishList());
         model.addAttribute("formTitle", "Opret ønskeliste");
@@ -42,7 +42,7 @@ public class WishListController {
         return "wishlists/wishlist-form";
     }
 
-   
+
     @PostMapping
     public String create(@ModelAttribute WishList wishList, HttpSession session, Model model) {
         Integer profileId = (Integer) session.getAttribute("profileId");
@@ -104,8 +104,8 @@ public class WishListController {
         if(session.getAttribute("profileId") == null){
             return "redirect:/login";
         }
-      wishListService.deleteById(id);
-      return "redirect:/wishlists/";
+        wishListService.deleteById(id);
+        return "redirect:/wishlists/";
     }
 //tihi
 
