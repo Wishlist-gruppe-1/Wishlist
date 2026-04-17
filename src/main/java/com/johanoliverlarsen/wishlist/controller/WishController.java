@@ -29,8 +29,9 @@ public class WishController {
     public String showCreateForm(@PathVariable int wishListId, Model model) {
         model.addAttribute("wish", new Wish());
         model.addAttribute("formTitle", "Opret ønske");
-        model.addAttribute("formAction", "profile/list/" + wishListId); //redirect til post endpoint ved submit
+        model.addAttribute("formAction", "/profile/list/" + wishListId); //redirect til post endpoint ved submit
         model.addAttribute("submitLabel", "Opret");
+        model.addAttribute("cancelUrl", "/profile/list/" + wishListId);
         return "wishes/wish-form";
     }
 
@@ -38,13 +39,14 @@ public class WishController {
     public String create(@ModelAttribute Wish wish, @PathVariable int wishListId, Model model) {
         try {
             wishService.create(wish, wishListId);
-            return "redirect:/profile/list/{wishListId}";
+            return "redirect:/profile/list/" + wishListId;
         } catch (InvalidWishException ex) {
-            model.addAttribute("wish", new Wish());
+            model.addAttribute("wish", wish);
             model.addAttribute("formTitle", "Opret ønske");
-            model.addAttribute("formAction", "profile/list/" + wishListId); //redirect til post endpoint ved submit
+            model.addAttribute("formAction", "/profile/list/" + wishListId); //redirect til post endpoint ved submit
             model.addAttribute("submitLabel", "Opret");
             model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("cancelUrl", "/profile/list/" + wishListId);
             return "wishes/wish-form";
         }
     }
@@ -55,32 +57,34 @@ public class WishController {
         Wish wish = wishService.findById(id);
         model.addAttribute("wish", wish);
         model.addAttribute("formTitle", "Rediger ønske");
-        model.addAttribute("formAction", "profile/list/" + wishListId + "/wish/" + id); //redirect til post endpoint ved submit
+        model.addAttribute("formAction", "/profile/list/" + wishListId + "/wish/" + id); //redirect til post endpoint ved submit
         model.addAttribute("submitLabel", "Opdater");
+        model.addAttribute("cancelUrl", "/profile/list/" + wishListId);
         return "wishes/wish-form";
 
     }
 
-    @PostMapping("{wishListId}/wish/{id}")
+    @PostMapping("/{wishListId}/wish/{id}")
     public String update(@PathVariable int wishListId, @PathVariable int id, @ModelAttribute Wish wish, Model model) {
         try {
             wishService.update(id, wish);
-            return "redirect:/profile/list/{wishListId}";
+            return "redirect:/profile/list/" + wishListId;
         } catch (InvalidWishException ex) {
             wish.setWishId(id);
             model.addAttribute("wish", wish);
             model.addAttribute("formTitle", "Rediger ønske");
-            model.addAttribute("formAction", "profile/list/" + wishListId + "/wish/" + id); //redirect til post endpoint ved submit
+            model.addAttribute("formAction", "/profile/list/" + wishListId + "/wish/" + id); //redirect til post endpoint ved submit
             model.addAttribute("submitLabel", "Opdater");
             model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("cancelUrl", "/profile/list/" + wishListId);
             return "wishes/wish-form";
         }
     }
 
-    @PostMapping("{wishListId}/wish/{id}/delete")
+    @PostMapping("/{wishListId}/wish/{id}/delete")
     public String delete(@PathVariable int wishListId, @PathVariable int id) {
         wishService.deleteById(id);
-        return "redirect:wish-list";
+        return "redirect:/profile/list/" + wishListId;
     }
 
 

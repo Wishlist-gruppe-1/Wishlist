@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${formTitle}">Profile Form</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+  <h1 th:text="${formTitle}">Wish Form</h1>
+
+  <div class="error-box" th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <form th:action="${formAction}" th:object="${wish}" method="post">
+    <div class="field">
+      <label for="title">Titel</label>
+      <input id="title" type="text"  th:field="*{title}" maxlength="50">
+    </div>
+
+    <div class="field">
+      <label for="description">Beskrivelse</label>
+      <input id="description" type="text" th:field="*{description}" maxlength="500">
+    </div>
+
+    <div class="field">
+      <label for="location">Lokation</label>
+      <input id="location" type="text" th:field="*{location}" maxlength="200">
+    </div>
+
+    <div class="field">
+      <label for="date">Dato</label>
+      <input id="date" type="date" th:field="*{date}">
+    </div>
+
+
+    <div class="field">
+      <label for="price">Pris</label>
+      <input id="price" type="number" th:field="*{price}">
+    </div>
+
+    <div class="field">
+      <label for="url">URL</label>
+      <input id="url" type="text" th:field="*{url}" maxlength="2083">
+    </div>
+
+    <div class="actions">
+      <button type="submit" th:text="${submitLabel}">Save</button>
+      <a th:href="${cancelUrl}" class="button">Afbryd</a>
+    </div>
+  </form>
+</div>
+</body>
+</html>
