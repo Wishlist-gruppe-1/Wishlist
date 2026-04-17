@@ -4,6 +4,7 @@ package com.johanoliverlarsen.wishlist.repository;
 import com.johanoliverlarsen.wishlist.exception.WishListNotFoundException;
 import com.johanoliverlarsen.wishlist.model.Wish;
 import com.johanoliverlarsen.wishlist.model.WishList;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -36,7 +37,11 @@ public class WishListRepository {
                 FROM wishlist w
                 WHERE w.wishlist_id = ?
                 """;
-        return jdbcTemplate.queryForObject(sql, wishListRowMapper, id);
+        try {
+            return jdbcTemplate.queryForObject(sql, wishListRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public List <WishList> findAllByProfileId(int profileId){

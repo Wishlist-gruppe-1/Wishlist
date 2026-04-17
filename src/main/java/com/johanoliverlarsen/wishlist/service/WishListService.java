@@ -25,12 +25,7 @@ public class WishListService {
     public WishList findById(int id) {
         validateId(id);
 
-        WishList wishlist;
-        try {
-            wishlist = wishListRepository.findById(id);
-        } catch (DataAccessException ex) {
-            throw new DatabaseOperationException("Listen kunne ikke hentes.", ex);
-        }
+        WishList wishlist = wishListRepository.findById(id);
 
         if (wishlist == null) {
             throw new WishListNotFoundException(id);
