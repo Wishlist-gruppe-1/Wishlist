@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -19,7 +18,7 @@ public class WishListRepository {
     private final JdbcTemplate jdbcTemplate;
     private RowMapper<WishList> wishListRowMapper = (rs, rowNum) ->
             new WishList(
-                    rs.getInt("wishlist_id"),
+                    rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("description")
             );
@@ -27,6 +26,9 @@ public class WishListRepository {
     public WishListRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+//    public List<WishList> findAll(){
+//    }
 
     public WishList findById(int id){
         String sql = """
@@ -37,25 +39,25 @@ public class WishListRepository {
         return jdbcTemplate.queryForObject(sql, wishListRowMapper, id);
     }
 
-//    public List <WishList> findAllByProfileId(int profileId){
-//        String sql = """
-//               SELECT w.wishlist_id, w.title, w.description
-//               FROM wishlist w
-//               WHERE w.profile_id = ?
-//               """;
-//
-//        List<WishList> wishLists = jdbcTemplate.query(connection -> {
-//            var ps = connection.prepareStatement(sql);
-//            ps.setInt(1, profileId);
-//            return ps;
-//        }, wishListRowMapper);
-//
-//        if (wishLists.isEmpty()) {
-//            throw new WishListNotFoundException("Ingen wishlists fundet for profil med id " + profileId);
-//        }
-//
-//        return wishLists;
-//    }
+    public List <WishList> findAllByProfileId(int profileId){
+        String sql = """
+               SELECT w.wishlist_id, w.title, w.description
+               FROM wishlist w
+               WHERE w.profile_id = ?
+               """;
+
+        List<WishList> wishLists = jdbcTemplate.query(connection -> {
+            var ps = connection.prepareStatement(sql);
+            ps.setInt(1, profileId);
+            return ps;
+        }, wishListRowMapper);
+
+        if (wishLists.isEmpty()) {
+            throw new WishListNotFoundException("Ingen wishlists fundet for profil med id " + profileId);
+        }
+
+        return wishLists;
+    }
 
     public WishList insert(WishList wishlist, int profile_id){
         String sql = """
@@ -118,5 +120,9 @@ public class WishListRepository {
 
         return rowsDeleted > 0;
     }
+
+
+
+
 
 }
