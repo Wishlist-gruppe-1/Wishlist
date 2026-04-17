@@ -14,17 +14,19 @@ import java.util.List;
 @Repository
 public class WishRepository {
     private final JdbcTemplate jdbcTemplate;
-    private RowMapper<Wish> wishRowMapper = (rs, rowNum) ->
-            new Wish(
-                    rs.getInt("wish_id"),
-                    rs.getString("title"),
-                    rs.getString("description"),
-                    rs.getString("location"),
-                    rs.getDate("date").toLocalDate(),
-                    rs.getBigDecimal("price"),
-                    rs.getString("url"),
-                    null // tags sættes bagefter
-            );
+    private RowMapper<Wish> wishRowMapper = (rs, rowNum) -> {
+        java.sql.Date sqlDate = rs.getDate("date");
+        return new Wish(
+                rs.getInt("wish_id"),
+                rs.getString("title"),
+                rs.getString("description"),
+                rs.getString("location"),
+                sqlDate != null ? sqlDate.toLocalDate() : null,
+                rs.getBigDecimal("price"),
+                rs.getString("url"),
+                null // tags sættes bagefter
+        );
+    };
 
     public WishRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -37,7 +39,7 @@ public class WishRepository {
 
     public List<Wish> findAllByWishListId(int wishListId) {
         String sql = """
-                SELECT * FROM wish.w
+                SELECT * FROM wish w
                 WHERE w.wishlist_id = ?
                 ORDER BY w.wish_id
                 """;
@@ -90,15 +92,15 @@ public class WishRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-           PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-           ps.setString(1, wish.getTitle());
-           ps.setString(2, wish.getDescription());
-           ps.setString(3, wish.getLocation());
-           ps.setDate(4, wish.getDate() != null ? java.sql.Date.valueOf(wish.getDate()) : null);
-           ps.setBigDecimal(5, wish.getPrice());
-           ps.setString(6, wish.getUrl());
-           ps.setInt(7, wishListId);
-           return ps;
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, wish.getTitle());
+            ps.setString(2, wish.getDescription());
+            ps.setString(3, wish.getLocation());
+            ps.setDate(4, wish.getDate() != null ? java.sql.Date.valueOf(wish.getDate()) : null);
+            ps.setBigDecimal(5, wish.getPrice());
+            ps.setString(6, wish.getUrl());
+            ps.setInt(7, wishListId);
+            return ps;
         }, keyHolder);
 
         Number key = keyHolder.getKey();
@@ -120,6 +122,7 @@ public class WishRepository {
     }
 
     private void insertTags(int id, List<String> tags) {
+        if (tags == null || tags.isEmpty()) return;
         String sql = """
                 INSERT INTO wish_tag (wish_id, tag_id)
                 SELECT ?, tag_id FROM tag WHERE title = ?
@@ -135,7 +138,7 @@ public class WishRepository {
                 DELETE FROM wish_tag WHERE wish_id = ?;
                 """;
 
-            jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, id);
     }
 
 
@@ -176,5 +179,7 @@ public class WishRepository {
         int rowsDeleted = jdbcTemplate.update(sql, id);
         return rowsDeleted > 0;
     }
+
+    //test
 
 }
