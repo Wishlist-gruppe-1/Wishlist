@@ -1,10 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title>Wish2Gather</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet"
+          href="/styles.css"
+          th:href="@{/styles.css}"/>
 </head>
 <body>
+<!-- NAV -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- HERO -->
+<section class="hero">
+    <p class="hero-eyebrow">Organiser, arrangér og opdag nye oplevelser nær dig</p>
+    <h1>Alle dine ønskeoplevelser samlet ét sted</h1>
+    <div class="hero-cta">
+        <a href="#" class="btn-primary">Opret konto</a>
+        <a href="#" class="btn-outline">Log ind</a>
+    </div>
+</section>
+
+<!-- ØNSKER SECTION -->
+<section class="wishes-section">
+    <h2><span>Ønsker</span> du kan huske på.</h2>
+    <p class="subtitle">Ikke flere "det kunne være sjovt at..." – saml alle dine oplevelsesønsker ét sted, og del dem med dine nærmeste.</p>
+
+    <div class="quote-block">
+        <blockquote>
+            "Jeg kunne så godt tænke mig, at vi kom ud og prøvede at male krukker sammen engang."
+        </blockquote>
+        <p class="quote-meta">
+            <strong>Julefrokosten 2025,</strong> <span class="forgotten">glemt 3 dage senere.</span>
+        </p>
+    </div>
+
+    <p class="now-save">Nu kan du gemme det.</p>
+
+    <div class="event-card">
+        <div class="event-card-top">
+            <span class="event-dot"></span>
+            <span class="event-title">Krukkemaling i Frederiksberg</span>
+        </div>
+        <p class="event-desc">En hyggelig familietur med krukker og kaffe</p>
+        <div class="event-meta">
+        <span class="event-price">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.48 4.52 16.94 4.07 14H6v-2H4.07C4.52 9.06 7.06 6.52 10 6.07V8h2V6.07c2.94.45 5.48 2.99 5.93 5.93H16v2h1.93c-.45 2.94-2.99 5.48-5.93 5.93z"/></svg>
+          250kr
+        </span>
+            <div class="event-right">
+          <span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Frederiksberg
+          </span>
+                <span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            25.04.2026
+          </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <h3 class="feature-title">Opret lister</h3>
+            <p class="feature-body">
+                Én til sommer, én til familien, én til kollegaer, én til dine venner – ligeså mange som du har tid til at opfylde.<br><br>
+                Organiser din profil som du ønsker.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3 class="feature-title">Tilføj ønsker</h3>
+            <p class="feature-body">
+                Navn, dato, lokation, pris mm. Gem alt det vigtigste information til ønskedagen.<br><br>
+                Gem de oplevelser du drømmer om.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3 class="feature-title">Del med dine venner</h3>
+            <p class="feature-body">
+                Inviter venner og familie til din liste. Alle kan se hvad der skal ske, og andre kan reservere en plads.*<br><br>
+                Find sammen med dine nærmeste.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div th:replace="~{fragments :: footer}"></div>
+</footer>
 
 </body>
 </html>
