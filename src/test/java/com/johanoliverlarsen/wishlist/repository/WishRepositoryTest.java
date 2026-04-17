@@ -74,33 +74,34 @@ public class WishRepositoryTest {
         assertThat(lookupWish.getTag()).isEqualTo(savedWish.getTag());
     }
 
-    void updateAndReadBack() {
-        Wish updateWish = new Wish(
-                null,
-                "Chokoladetempering-workshop",
-                "Lav praliner og trøfler med en chocolatier",
-                "Ro Chokolade, Frederiksberg",
-                LocalDate.of(2026, 10, 4),
-                new BigDecimal("475.00"),
-                "test.dk",
-                List.of( "Indendørs", "Keramik"));
-        boolean updated = repo.update(updateWish);
-
-        if (updated) {
-
-        }
-
-        Wish lookupWish = repo.findById(savedWish.getWishId());
-        assertThat(lookupWish).isNotNull();
-        assertThat(lookupWish.getWishId()).isEqualTo(savedWish.getWishId());
-        assertThat(lookupWish.getTitle()).isEqualTo(savedWish.getTitle());
-        assertThat(lookupWish.getDescription()).isEqualTo(savedWish.getDescription());
-        assertThat(lookupWish.getLocation()).isEqualTo(savedWish.getLocation());
-        assertThat(lookupWish.getDate()).isEqualTo(savedWish.getDate());
-        assertThat(lookupWish.getPrice()).isEqualTo(savedWish.getPrice());
-        assertThat(lookupWish.getUrl()).isEqualTo(savedWish.getUrl());
-        assertThat(lookupWish.getTag()).isEqualTo(savedWish.getTag());
-    }
+//
+//    void updateAndReadBack() {
+//        Wish updateWish = new Wish(
+//                null,
+//                "Chokoladetempering-workshop",
+//                "Lav praliner og trøfler med en chocolatier",
+//                "Ro Chokolade, Frederiksberg",
+//                LocalDate.of(2026, 10, 4),
+//                new BigDecimal("475.00"),
+//                "test.dk",
+//                List.of( "Indendørs", "Keramik"));
+//        boolean updated = repo.update(updateWish);
+//
+//        if (updated) {
+//
+//        }
+//
+//        Wish lookupWish = repo.findById(savedWish.getWishId());
+//        assertThat(lookupWish).isNotNull();
+//        assertThat(lookupWish.getWishId()).isEqualTo(savedWish.getWishId());
+//        assertThat(lookupWish.getTitle()).isEqualTo(savedWish.getTitle());
+//        assertThat(lookupWish.getDescription()).isEqualTo(savedWish.getDescription());
+//        assertThat(lookupWish.getLocation()).isEqualTo(savedWish.getLocation());
+//        assertThat(lookupWish.getDate()).isEqualTo(savedWish.getDate());
+//        assertThat(lookupWish.getPrice()).isEqualTo(savedWish.getPrice());
+//        assertThat(lookupWish.getUrl()).isEqualTo(savedWish.getUrl());
+//        assertThat(lookupWish.getTag()).isEqualTo(savedWish.getTag());
+//    }
 
 }
 
