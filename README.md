@@ -43,9 +43,9 @@ Se venligst [CONTRIBUTING.md](/contributing.md)
 
 ## Developers
 
-Erik Lindkvist Thomsen - [lindkvst](https://github.com/lindkvst)
-Anne-Sophie Phanseeda - [anph1000](https://github.com/anph1000)
-Johan Oliver Larsen - [johanlarsen](https://github.com/johanlarsen)
-Julie Jensine Juul Sundsdal - [jsdsdal](https://github.com/jsdsdal)
+- Erik Lindkvist Thomsen - [lindkvst](https://github.com/lindkvst)
+- Anne-Sophie Phanseeda - [anph1000](https://github.com/anph1000)
+- Johan Oliver Larsen - [johanlarsen](https://github.com/johanlarsen)
+- Julie Jensine Juul Sundsdal - [jsdsdal](https://github.com/jsdsdal)
 
 **Udarbejdet som miniprojekt for Datamatiker 2. semester på EK (Erhvervsakademi København) fra uge 15-17 i foråret 2026.**
