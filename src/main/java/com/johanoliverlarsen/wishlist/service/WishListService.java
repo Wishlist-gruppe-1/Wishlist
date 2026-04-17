@@ -82,7 +82,7 @@ public class WishListService {
 
     }
 
-    public WishList update(int id, WishList wishList) {
+    public void update(int id, WishList wishList) {
         validateId(id);
         validateWishList(wishList);
 
