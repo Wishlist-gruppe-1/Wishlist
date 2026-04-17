@@ -14,17 +14,19 @@ import java.util.List;
 @Repository
 public class WishRepository {
     private final JdbcTemplate jdbcTemplate;
-    private RowMapper<Wish> wishRowMapper = (rs, rowNum) ->
-            new Wish(
-                    rs.getInt("wish_id"),
-                    rs.getString("title"),
-                    rs.getString("description"),
-                    rs.getString("location"),
-                    rs.getDate("date").toLocalDate(),
-                    rs.getBigDecimal("price"),
-                    rs.getString("url"),
-                    null // tags sættes bagefter
-            );
+    private RowMapper<Wish> wishRowMapper = (rs, rowNum) -> {
+        java.sql.Date sqlDate = rs.getDate("date");
+        return new Wish(
+                rs.getInt("wish_id"),
+                rs.getString("title"),
+                rs.getString("description"),
+                rs.getString("location"),
+                sqlDate != null ? sqlDate.toLocalDate() : null,
+                rs.getBigDecimal("price"),
+                rs.getString("url"),
+                null // tags sættes bagefter
+        );
+    };
 
     public WishRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -37,7 +39,7 @@ public class WishRepository {
 
     public List<Wish> findAllByWishListId(int wishListId) {
         String sql = """
-                SELECT * FROM wish.w
+                SELECT * FROM wish w
                 WHERE w.wishlist_id = ?
                 ORDER BY w.wish_id
                 """;
@@ -120,6 +122,7 @@ public class WishRepository {
     }
 
     private void insertTags(int id, List<String> tags) {
+        if (tags == null || tags.isEmpty()) return;
         String sql = """
                 INSERT INTO wish_tag (wish_id, tag_id)
                 SELECT ?, tag_id FROM tag WHERE title = ?

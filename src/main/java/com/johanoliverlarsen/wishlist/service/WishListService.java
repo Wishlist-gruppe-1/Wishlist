@@ -38,7 +38,7 @@ public class WishListService {
     public WishListService(WishListRepository wishListRepository) {
         this.wishListRepository = wishListRepository;
     }
-
+/*
     public WishList findById(int id) {
         validateId(id);
 
@@ -128,5 +128,7 @@ public class WishListService {
         }
 
     }
+
+ */
 
 }

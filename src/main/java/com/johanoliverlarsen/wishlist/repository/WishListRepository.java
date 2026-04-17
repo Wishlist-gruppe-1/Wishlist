@@ -16,6 +16,7 @@ import java.util.List;
 
 @Repository
 public class WishListRepository {
+    /*
     private final JdbcTemplate jdbcTemplate;
     private RowMapper<WishList> wishListRowMapper = (rs, rowNum) ->
             new WishList(
@@ -118,5 +119,7 @@ public class WishListRepository {
 
         return rowsDeleted > 0;
     }
+
+     */
 
 }
