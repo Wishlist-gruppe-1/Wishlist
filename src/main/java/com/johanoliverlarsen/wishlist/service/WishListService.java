@@ -12,23 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/*
-- wishListRepository: WishListRepository
-
-+ findAll(): List<WishList>
-+ findById(id: int): WishList
-+ findAllByProfileId(ProfileId: int): List<WishList>
-+ create(wishList: WishList): WishList
-+ update(id: int, wishList: WishList)
-+ deleteById(id: int)
-
-//private metoder til data validering
-- validateId(id: int)
-- valdateWishList(wishList: WishList)
- */
-
-
-
 @Service
 
 public class WishListService {
