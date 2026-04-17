@@ -1,5 +1,6 @@
 package com.johanoliverlarsen.wishlist.controller;
 
+import com.johanoliverlarsen.wishlist.exception.InvalidWishListException;
 import com.johanoliverlarsen.wishlist.model.WishList;
 import com.johanoliverlarsen.wishlist.service.WishListService;
 import org.springframework.stereotype.Controller;
@@ -17,19 +18,34 @@ public class WishListController {
         this.wishListService = wishListService;
     }
 
-    @GetMapping()
-    public String list(Model model) {
-        return null;
+    @GetMapping("/{profileId}")
+    public String list(@PathVariable int profileId, Model model) {
+        model.addAttribute("wishlists", wishListService.findAllByProfileId(profileId));
+        return "wishlists/wishlist-list";
     }
 
-    @GetMapping("/create")
-    public String showCreateForm(Model model) {
-        return null;
+    @GetMapping("/{profileId}/create-wishlist")
+    public String showCreateForm(@PathVariable int profileId, Model model) {
+        model.addAttribute("wishlist", new WishList());
+        model.addAttribute("formTitle", "Opret ønskeliste");
+        model.addAttribute("formAction", "profile" + profileId); //redirect til post endpoint ved submit
+        model.addAttribute("submitLabel", "Opret");
+        return "wishlists/wishlist-form";
     }
 
-    @PostMapping
-    public String create(@ModelAttribute WishList wishList, Model model) {
-        return null;
+    @PostMapping("/{profileId}")
+    public String create(@ModelAttribute WishList wishList, @PathVariable int profileId, Model model) {
+        try{
+            wishListService.create(wishList, profileId);
+            return "redirect:/profile/{profileId}";
+        }catch (InvalidWishListException ex) {
+            model.addAttribute("wishlist", new WishList());
+            model.addAttribute("formTitle", "Opret ønskeliste");
+            model.addAttribute("formAction", "profile" + profileId);
+            model.addAttribute("submitLabel", "Opret");
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "wishlists/wishlist-form";
+        }
     }
 
 
