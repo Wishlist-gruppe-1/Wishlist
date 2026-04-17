@@ -15,8 +15,12 @@ public class Profile {
         this.password = password;
     }
 
+    public Profile() {
+        //tom konstruktør
+    }
 
-    public int getProfileId() {
+
+    public Integer getProfileId() {
         return profileId;
     }
 
@@ -59,16 +63,5 @@ public class Profile {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Profile profile = (Profile) o;
-        return Objects.equals(profileId, profile.profileId) && Objects.equals(name, profile.name) && Objects.equals(email, profile.email) && Objects.equals(password, profile.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(profileId, name, email, password);
-    }
 }
 
