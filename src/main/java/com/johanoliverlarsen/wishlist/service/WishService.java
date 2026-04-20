@@ -2,8 +2,11 @@ package com.johanoliverlarsen.wishlist.service;
 
 import com.johanoliverlarsen.wishlist.exception.DatabaseOperationException;
 import com.johanoliverlarsen.wishlist.exception.InvalidWishException;
+import com.johanoliverlarsen.wishlist.exception.WishListNotFoundException;
 import com.johanoliverlarsen.wishlist.exception.WishNotFoundException;
 import com.johanoliverlarsen.wishlist.model.Wish;
+import com.johanoliverlarsen.wishlist.model.WishList;
+import com.johanoliverlarsen.wishlist.repository.WishListRepository;
 import com.johanoliverlarsen.wishlist.repository.WishRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,29 +18,33 @@ import java.util.List;
 @Service
 public class WishService {
     private final WishRepository wishRepository;
+    private final WishListRepository wishListRepository;
 
-    public WishService(WishRepository wishRepository) {
+    public WishService(WishRepository wishRepository, WishListRepository wishListRepository) {
         this.wishRepository = wishRepository;
+        this.wishListRepository = wishListRepository;
     }
 
     public Wish findById(int id) {
         validateId(id);
 
-        Wish wish;
-        try {
-            wish = wishRepository.findById(id);
-        } catch (DataAccessException ex) {
-            throw new DatabaseOperationException("Ønsket kunne ikke hentes.", ex);
-        }
+        Wish wish = wishRepository.findById(id);
 
         if (wish == null) {
             throw new WishNotFoundException(id);
         }
+
         return wish;
     }
 
     public List<Wish> findAllByWishListId(int wishListId) {
         validateId(wishListId);
+
+        WishList wishList = wishListRepository.findById(wishListId);
+
+        if (wishList == null) {
+            throw new WishListNotFoundException(wishListId);
+        }
 
         try {
             return wishRepository.findAllByWishListId(wishListId);

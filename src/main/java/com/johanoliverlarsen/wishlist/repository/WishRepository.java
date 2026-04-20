@@ -1,6 +1,7 @@
 package com.johanoliverlarsen.wishlist.repository;
 
 import com.johanoliverlarsen.wishlist.model.Wish;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,6 +45,7 @@ public class WishRepository {
                 ORDER BY w.wish_id
                 """;
         return jdbcTemplate.query(sql, wishRowMapper, wishListId);
+
     }
 
     public Wish findById(int id) {
@@ -51,9 +53,13 @@ public class WishRepository {
                 SELECT * FROM wish
                 WHERE wish_id = ?
                 """;
-        Wish w = jdbcTemplate.queryForObject(sql, wishRowMapper, id);
-        attachTags(List.of(w));
-        return w;
+        try {
+            Wish w = jdbcTemplate.queryForObject(sql, wishRowMapper, id);
+            attachTags(List.of(w));
+            return w;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     private List<String> findTagsById(int id) {
