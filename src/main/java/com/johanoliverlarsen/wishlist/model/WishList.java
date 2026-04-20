@@ -23,6 +23,6 @@ public class WishList {
 
     @Override
     public String toString(){
-        return "WishListId: " + wishListId + ", Title: " + title + ", Description: " + description;
+        return "WishListId: " + wishListId + "Title: " + title + ", Description: " + description;
     }
 }

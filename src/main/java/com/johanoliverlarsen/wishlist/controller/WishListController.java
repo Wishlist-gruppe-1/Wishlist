@@ -23,7 +23,7 @@ public class WishListController {
     public String list(HttpSession session, Model model) {
         Integer profileId = (Integer) session.getAttribute("profileId");
         if(profileId == null){
-            return "redirect:/login";
+            return "redirect:/profile";
         }
         model.addAttribute("wishlists", wishListService.findAllByProfileId(profileId));
         return "wishlists/wishlist-list";

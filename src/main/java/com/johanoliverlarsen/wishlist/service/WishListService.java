@@ -48,6 +48,7 @@ public class WishListService {
     }
 
 
+
     public WishList create(WishList wishList, int profileId) {
       validateWishList(wishList);
       validateId(profileId);
@@ -59,6 +60,7 @@ public class WishListService {
       }
 
     }
+
 
     public void update(int id, WishList wishList) {
         validateId(id);

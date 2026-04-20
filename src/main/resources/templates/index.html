@@ -11,15 +11,15 @@
 </head>
 <body>
 <!-- NAV -->
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments :: navbar}"></div>
 
 <!-- HERO -->
 <section class="hero">
     <p class="hero-eyebrow">Organiser, arrangér og opdag nye oplevelser nær dig</p>
     <h1>Alle dine ønskeoplevelser samlet ét sted</h1>
     <div class="hero-cta">
-        <a href="#" class="btn-primary">Opret konto</a>
-        <a href="#" class="btn-outline">Log ind</a>
+        <a th:href="@{/profile/create}" class="btn-primary">Opret konto</a>
+        <a th:href="@{/profile/login}" class="btn-outline">Log ind</a>
     </div>
 </section>
 

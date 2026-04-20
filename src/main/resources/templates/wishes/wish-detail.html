@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${wish != null ? wish.title : 'Ønske'}">Ønske</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+<div class="detail-page">
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="detail-wrapper">
+        <div class="wish-card">
+            <h1 th:text="${wish.title}">Ønsketitel</h1>
+
+            <div th:if="${wish.description != null and !wish.description.isBlank()}">
+                <p class="wish-description-label">Beskrivelse:</p>
+                <p class="wish-description-text" th:text="${wish.description}">Beskrivelse her</p>
+            </div>
+
+            <div class="wish-meta-grid">
+                <div class="wish-meta-row" th:if="${wish.location != null}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span th:text="${wish.location}">Lokation</span>
+                </div>
+                <div class="wish-meta-row" th:if="${wish.price != null}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.48 4.52 16.94 4.07 14H6v-2H4.07C4.52 9.06 7.06 6.52 10 6.07V8h2V6.07c2.94.45 5.48 2.99 5.93 5.93H16v2h1.93c-.45 2.94-2.99 5.48-5.93 5.93z"/></svg>
+                    <span th:text="${wish.price} + 'kr'">0kr</span>
+                </div>
+                <div class="wish-meta-row" th:if="${wish.date != null}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span th:text="${#temporals.format(wish.date, 'dd.MM.yyyy')}">01.01.2026</span>
+                </div>
+                <div class="wish-meta-row" th:if="${wish.url != null}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    <a th:href="${wish.url}" target="_blank" th:text="${wish.url}">Link</a>
+                </div>
+            </div>
+
+            <div class="wish-tags" th:if="${wish.tag != null and !wish.tag.isEmpty()}">
+                <span class="tag-chip" th:each="tag : ${wish.tag}" th:text="${tag}">Tag</span>
+            </div>
+
+            <div class="wish-actions">
+                <a th:href="@{/profile/list/__${wishListId}__/wish/__${wish.wishId}__/edit}" class="btn-secondary">Rediger ønske</a>
+                <form th:action="@{/profile/list/__${wishListId}__/wish/__${wish.wishId}__/delete}" method="post" style="display:inline;">
+                    <button type="submit" class="btn-danger"
+                            onclick="return confirm('Er du sikker på, at du vil slette dette ønske?')">Slet ønske</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div th:replace="~{fragments :: footer}"></div>
+    </footer>
+</div>
+</body>
+</html>
