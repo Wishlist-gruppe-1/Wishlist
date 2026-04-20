@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title th:text="${wishlist != null ? wishlist.title : 'Mine ønsker'}">Mine ønsker</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
 </head>
 <body>
+<div class="wishlist-page">
+    <div th:replace="~{fragments :: navbar}"></div>
 
+    <div class="wishlist-layout">
+        <!-- LEFT: Sidebar -->
+        <div class="wishlist-sidebar">
+            <h1 th:text="${wishlist != null ? wishlist.title : 'Ønskeliste'}">Ønskeliste</h1>
+            <p class="description" th:if="${wishlist != null and wishlist.description != null}" th:text="${wishlist.description}">Beskrivelse</p>
+
+            <div class="sidebar-actions">
+                <a th:href="@{/profile/list/__${wishListId}__/create-wish}" class="btn-primary">Tilføj ønske</a>
+                <a th:href="@{/profile/list/__${wishListId}__/edit}" class="btn-secondary">Rediger liste</a>
+                <form th:action="@{/profile/list/__${wishListId}__/delete}" method="post">
+                    <button type="submit" class="btn-danger"
+                            onclick="return confirm('Er du sikker på, at du vil slette denne liste?')">Slet liste</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- RIGHT: Wishes -->
+        <div class="wishes-panel">
+            <h2>Mine ønsker</h2>
+
+            <div class="wishes-list" th:if="${wishes != null and !wishes.isEmpty()}">
+                <a th:each="wish : ${wishes}"
+                   th:href="@{/profile/list/__${wishListId}__/wish/__${wish.wishId}__}"
+                   class="wish-row">
+                    <div class="wish-row-left">
+                        <span class="wish-dot"></span>
+                        <span class="wish-row-title" th:text="${wish.title}">Ønsketitel</span>
+                    </div>
+                    <div class="wish-row-right">
+                        <span class="wish-meta-item" th:if="${wish.price != null}">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.48 4.52 16.94 4.07 14H6v-2H4.07C4.52 9.06 7.06 6.52 10 6.07V8h2V6.07c2.94.45 5.48 2.99 5.93 5.93H16v2h1.93c-.45 2.94-2.99 5.48-5.93 5.93z"/></svg>
+                            <span th:text="${wish.price} + 'kr'">0kr</span>
+                        </span>
+                        <span class="wish-meta-item" th:if="${wish.location != null}">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span th:text="${wish.location}">Lokation</span>
+                        </span>
+                        <span class="wish-meta-item" th:if="${wish.date != null}">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span th:text="${#temporals.format(wish.date, 'dd.MM.yyyy')}">01.01.2026</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="empty-state" th:if="${wishes == null or wishes.isEmpty()}">
+                <p>Ingen ønsker endnu — tilføj det første!</p>
+                <a th:href="@{/profile/list/__${wishListId}__/create-wish}" class="btn-primary">Tilføj ønske</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div th:replace="~{fragments :: footer}"></div>
+    </footer>
+</div>
 </body>
 </html>

@@ -81,6 +81,13 @@ public class WishController {
         }
     }
 
+    @GetMapping("/wish/{id}")
+    public String detail(@PathVariable int wishListId, @PathVariable int id, Model model) {
+        model.addAttribute("wish", wishService.findById(id));
+        model.addAttribute("wishListId", wishListId);
+        return "wishes/wish-detail";
+    }
+
     @PostMapping("/wish/{id}/delete")
     public String delete(@PathVariable int wishListId, @PathVariable int id) {
         wishService.deleteById(id);
