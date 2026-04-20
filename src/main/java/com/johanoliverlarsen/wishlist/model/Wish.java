@@ -50,7 +50,7 @@ public class Wish {
 
     @Override
     public String toString() {
-        return "WishId: " + wishId + ", Title: " + title + ", Description: " + description + ", Location: " + location +
-                ", Date: " + date + ", Price: " + price + ", URL: " + url + ", Tag: " + tag;
+        return "WishId: " + wishId + ", Title: " + title + ", Description: " + description
+                + ", Location: " + location + ", Date: " + date + ", Price: " + price + ", URL: " + url + ", Tag: " + tag;
     }
 }

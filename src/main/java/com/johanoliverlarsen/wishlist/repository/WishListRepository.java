@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -18,7 +19,7 @@ public class WishListRepository {
     private final JdbcTemplate jdbcTemplate;
     private RowMapper<WishList> wishListRowMapper = (rs, rowNum) ->
             new WishList(
-                    rs.getInt("id"),
+                    rs.getInt("wishlist_id"),
                     rs.getString("title"),
                     rs.getString("description")
             );
@@ -26,9 +27,6 @@ public class WishListRepository {
     public WishListRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-//    public List<WishList> findAll(){
-//    }
 
     public WishList findById(int id){
         String sql = """
@@ -120,9 +118,5 @@ public class WishListRepository {
 
         return rowsDeleted > 0;
     }
-
-
-
-
 
 }
