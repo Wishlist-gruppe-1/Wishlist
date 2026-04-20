@@ -91,26 +91,6 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "auth/login";
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password,
-                        HttpSession session,
-                        Model model) {
-        try {
-            Profile profile = profileService.login(email, password);
-            session.setAttribute("profileId", profile.getProfileId());
-            return "redirect:/profile/list";
-        } catch (InvalidProfileException ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-            return "auth/login";
-        }
-    }
-
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable int id) {
         profileService.deleteById(id);

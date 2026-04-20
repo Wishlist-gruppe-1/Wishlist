@@ -1,7 +1,9 @@
 package com.johanoliverlarsen.wishlist.controller;
 
 import com.johanoliverlarsen.wishlist.exception.InvalidWishListException;
+import com.johanoliverlarsen.wishlist.model.Profile;
 import com.johanoliverlarsen.wishlist.model.WishList;
+import com.johanoliverlarsen.wishlist.service.ProfileService;
 import com.johanoliverlarsen.wishlist.service.WishListService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -14,18 +16,22 @@ import org.springframework.web.bind.annotation.*;
 public class WishListController {
 
     private final WishListService wishListService;
+    private final ProfileService profileService;
 
-    public WishListController(WishListService wishListService) {
+    public WishListController(WishListService wishListService, ProfileService profileService) {
         this.wishListService = wishListService;
+        this.profileService = profileService;
     }
 
     @GetMapping()
     public String list(HttpSession session, Model model) {
         Integer profileId = (Integer) session.getAttribute("profileId");
         if(profileId == null){
-            return "redirect:/profile";
+            return "redirect:/login";
         }
+        Profile profile = profileService.findById(profileId);
         model.addAttribute("wishlists", wishListService.findAllByProfileId(profileId));
+        model.addAttribute("profile", profile);
         return "wishlists/wishlist-list";
     }
 
