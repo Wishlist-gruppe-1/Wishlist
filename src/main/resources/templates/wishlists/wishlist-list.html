@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mine ønskelister – Wish2Gather</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <style>
+        body { background: #f7f4f0; margin: 0; }
+        .page-wrapper { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2.5rem 0 2rem;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #1e4f6b;
+            margin: 0;
+        }
+        .btn-primary {
+            padding: 0.7rem 1.4rem;
+            background: #e05a2b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #c44e22; }
+        .list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .list-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(30,79,107,0.07);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: box-shadow 0.2s;
+        }
+        .list-card:hover { box-shadow: 0 4px 24px rgba(30,79,107,0.13); }
+        .list-card-dot {
+            width: 10px; height: 10px;
+            background: #e05a2b;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        .list-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #1e4f6b;
+            font-weight: 700;
+        }
+        .list-card-desc {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: #7a8a96;
+            flex: 1;
+        }
+        .list-card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .btn-small {
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+        }
+        .btn-small-primary { background: #1e4f6b; color: #fff; }
+        .btn-small-primary:hover { background: #163d54; }
+        .btn-small-outline { background: transparent; color: #1e4f6b; border: 1.5px solid #1e4f6b; }
+        .btn-small-outline:hover { background: #f0f5f8; }
+        .btn-small-danger { background: transparent; color: #e05a2b; border: 1.5px solid #e05a2b; }
+        .btn-small-danger:hover { background: #fff0eb; }
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            font-family: 'DM Sans', sans-serif;
+            color: #7a8a96;
+        }
+        .empty-state h2 {
+            font-family: 'Playfair Display', serif;
+            color: #1e4f6b;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>Mine ønskelister</h1>
+        <a th:href="@{/profile/list/create}" class="btn-primary">+ Ny liste</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(wishlists)}" class="empty-state">
+        <h2>Ingen lister endnu</h2>
+        <p>Opret din første ønskeliste og begynd at samle dine drømme.</p>
+    </div>
+
+    <div class="list-grid" th:unless="${#lists.isEmpty(wishlists)}">
+        <div class="list-card" th:each="wishlist : ${wishlists}">
+            <div class="list-card-title">
+                <span class="list-card-dot"></span>
+                <span th:text="${wishlist.title}">Listenavn</span>
+            </div>
+            <div class="list-card-desc" th:text="${wishlist.description}">Beskrivelse af listen</div>
+            <div class="list-card-actions">
+                <a th:href="@{/profile/list/{id}(id=${wishlist.wishListId})}" class="btn-small btn-small-primary">Se ønsker</a>
+                <a th:href="@{/profile/list/{id}/edit(id=${wishlist.wishListId})}" class="btn-small btn-small-outline">Rediger</a>
+                <form th:action="@{/profile/list/{id}/delete(id=${wishlist.wishListId})}" method="post" style="margin:0">
+                    <button type="submit" class="btn-small btn-small-danger"
+                            onclick="return confirm('Er du sikker på du vil slette denne liste?')">Slet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

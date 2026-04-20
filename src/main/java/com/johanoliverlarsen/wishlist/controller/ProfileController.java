@@ -1,8 +1,11 @@
 package com.johanoliverlarsen.wishlist.controller;
+
 import com.johanoliverlarsen.wishlist.exception.DuplicateProfileException;
 import com.johanoliverlarsen.wishlist.exception.InvalidProfileException;
 import com.johanoliverlarsen.wishlist.model.Profile;
 import com.johanoliverlarsen.wishlist.service.ProfileService;
+import com.johanoliverlarsen.wishlist.service.WishListService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/profile")
 
-/*
+public class ProfileController {
+
+    /*
 - profileService: ProfileService
 
 + list(model: Model): string
@@ -21,13 +26,12 @@ import org.springframework.web.bind.annotation.*;
 + delete(id: int): string
  */
 
-public class ProfileController {
-
-
     private final ProfileService profileService;
+    private final WishListService wishListService;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, WishListService wishListService) {
         this.profileService = profileService;
+        this.wishListService = wishListService;
     }
 
     @GetMapping()
@@ -36,28 +40,39 @@ public class ProfileController {
         return "profiles/profile-list";
     }
 
+    @GetMapping("/my-profile")
+    public String dashboard(HttpSession session, Model model) {
+        Integer profileId = (Integer) session.getAttribute("profileId");
+        if (profileId == null) {
+            return "redirect:/profile/login";
+        }
+        Profile profile = profileService.findById(profileId);
+        model.addAttribute("profile", profile);
+        model.addAttribute("wishlists", wishListService.findAllByProfileId(profileId));
+        return "profile/my-profile";
+    }
+
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("profile", new Profile());
         model.addAttribute("formTitle", "Opret profil");
         model.addAttribute("formAction", "/profile");
         model.addAttribute("submitLabel", "Opret");
-
         return "profiles/profile-form";
     }
 
     @PostMapping
-    public String create(@ModelAttribute Profile profile, Model model) {
+    public String create(@ModelAttribute Profile profile, HttpSession session, Model model) {
         try {
-            profileService.create(profile);
-            return "redirect:/profil";
+            Profile created = profileService.create(profile);
+            session.setAttribute("profileId", created.getProfileId());
+            return "redirect:/profile/my-profile";
         } catch (InvalidProfileException | DuplicateProfileException ex) {
             model.addAttribute("profile", profile);
             model.addAttribute("formTitle", "Opret profil");
             model.addAttribute("formAction", "/profile");
             model.addAttribute("submitLabel", "Opret");
             model.addAttribute("errorMessage", ex.getMessage());
-
             return "profiles/profile-form";
         }
     }
@@ -69,7 +84,6 @@ public class ProfileController {
         model.addAttribute("formAction", "/profile/" + id);
         model.addAttribute("submitLabel", "Opdater");
         model.addAttribute("profile", profile);
-
         return "profiles/profile-form";
     }
 
@@ -77,7 +91,7 @@ public class ProfileController {
     public String update(@PathVariable int id, @ModelAttribute Profile profile, Model model) {
         try {
             profileService.update(id, profile);
-            return "redirect:/profil";
+            return "redirect:/profile/my-profile";
         } catch (InvalidProfileException | DuplicateProfileException ex) {
             profile.setProfileId(id);
             model.addAttribute("profile", profile);
@@ -85,20 +99,33 @@ public class ProfileController {
             model.addAttribute("formAction", "/profile/" + id);
             model.addAttribute("submitLabel", "Opdater");
             model.addAttribute("errorMessage", ex.getMessage());
-
             return "profiles/profile-form";
+        }
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam String email,
+                        @RequestParam String password,
+                        HttpSession session,
+                        Model model) {
+        try {
+            Profile profile = profileService.login(email, password);
+            session.setAttribute("profileId", profile.getProfileId());
+            return "redirect:/profile/my-profile";
+        } catch (InvalidProfileException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "login";
         }
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable int id) {
         profileService.deleteById(id);
-        return "redirect:/profil";
+        return "redirect:/profile";
     }
 }
-
-
-
-
-
-

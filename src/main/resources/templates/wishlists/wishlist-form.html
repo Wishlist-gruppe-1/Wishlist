@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${formTitle} + ' – Wish2Gather'">Ønskeliste – Wish2Gather</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <style>
+        body { background: #f7f4f0; margin: 0; }
+        .form-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .form-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(30,79,107,0.10);
+            padding: 3rem 2.5rem 2.5rem;
+            width: 100%;
+            max-width: 500px;
+        }
+        .form-card h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #1e4f6b;
+            margin: 0 0 0.4rem;
+        }
+        .form-card p.subtitle {
+            font-family: 'DM Sans', sans-serif;
+            color: #7a8a96;
+            margin: 0 0 2rem;
+            font-size: 0.95rem;
+        }
+        .field { margin-bottom: 1.2rem; }
+        .field label {
+            display: block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e4f6b;
+            margin-bottom: 0.4rem;
+        }
+        .field input, .field textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid #d6e0e8;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            color: #1e4f6b;
+            background: #f7f4f0;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .field textarea { resize: vertical; min-height: 100px; }
+        .field input:focus, .field textarea:focus {
+            border-color: #1e4f6b;
+            background: #fff;
+        }
+        .error-box {
+            background: #fff0eb;
+            border: 1.5px solid #e05a2b;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.2rem;
+            font-family: 'DM Sans', sans-serif;
+            color: #e05a2b;
+            font-size: 0.9rem;
+        }
+        .actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+        .btn-primary {
+            flex: 1;
+            padding: 0.85rem;
+            background: #e05a2b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #c44e22; }
+        .btn-outline {
+            flex: 1;
+            padding: 0.85rem;
+            background: transparent;
+            color: #1e4f6b;
+            border: 1.5px solid #1e4f6b;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .btn-outline:hover { background: #f0f5f8; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="form-wrapper">
+    <div class="form-card">
+        <h1 th:text="${formTitle}">Opret ønskeliste</h1>
+        <p class="subtitle">Giv din liste et navn og en beskrivelse.</p>
+
+        <div class="error-box" th:if="${errorMessage}">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="${formAction}" th:object="${wishlist}" method="post">
+            <div class="field">
+                <label for="title">Listenavn</label>
+                <input id="title" type="text" th:field="*{title}" placeholder="F.eks. Sommerønsker 2026" maxlength="100"/>
+            </div>
+            <div class="field">
+                <label for="description">Beskrivelse</label>
+                <textarea id="description" th:field="*{description}" placeholder="Hvad handler denne liste om?" maxlength="500"></textarea>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn-primary" th:text="${submitLabel}">Opret</button>
+                <a th:href="@{/profile/list}" class="btn-outline">Annuller</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

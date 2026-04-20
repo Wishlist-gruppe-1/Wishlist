@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Log ind – Wish2Gather</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+  <link rel="stylesheet" th:href="@{/styles.css}"/>
+  <style>
+    .auth-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7f4f0;
+    }
+    .auth-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(30,79,107,0.10);
+      padding: 3rem 2.5rem 2.5rem;
+      width: 100%;
+      max-width: 420px;
+    }
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+      text-decoration: none;
+    }
+    .auth-logo svg { width: 36px; height: 36px; }
+    .auth-logo span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e4f6b;
+    }
+    .auth-card h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #1e4f6b;
+      margin: 0 0 0.4rem;
+    }
+    .auth-card p.subtitle {
+      font-family: 'DM Sans', sans-serif;
+      color: #7a8a96;
+      margin: 0 0 2rem;
+      font-size: 0.95rem;
+    }
+    .field {
+      margin-bottom: 1.2rem;
+    }
+    .field label {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1e4f6b;
+      margin-bottom: 0.4rem;
+    }
+    .field input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #d6e0e8;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: #1e4f6b;
+      background: #f7f4f0;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .field input:focus {
+      border-color: #1e4f6b;
+      background: #fff;
+    }
+    .error-box {
+      background: #fff0eb;
+      border: 1.5px solid #e05a2b;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.2rem;
+      font-family: 'DM Sans', sans-serif;
+      color: #e05a2b;
+      font-size: 0.9rem;
+    }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      background: #e05a2b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+      box-sizing: border-box;
+    }
+    .btn-primary:hover { background: #c44e22; }
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: #7a8a96;
+    }
+    .auth-footer a {
+      color: #1e4f6b;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .auth-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <a class="auth-logo" th:href="@{/}">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="18" fill="#1e4f6b"/>
+        <path d="M11 14c0-3.866 3.134-7 7-7s7 3.134 7 7c0 5-7 15-7 15S11 19 11 14z" fill="#e05a2b"/>
+        <circle cx="18" cy="14" r="3" fill="white"/>
+      </svg>
+      <span>Wish2Gather</span>
+    </a>
+
+    <h1>Velkommen tilbage</h1>
+    <p class="subtitle">Log ind på din konto for at fortsætte.</p>
+
+    <div class="error-box" th:if="${errorMessage}">
+      <span th:text="${errorMessage}"></span>
+    </div>
+
+    <form th:action="@{/profile/login}" method="post">
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" name="email" placeholder="Din e-mailadresse" required/>
+      </div>
+      <div class="field">
+        <label for="password">Adgangskode</label>
+        <input id="password" type="password" name="password" placeholder="Din adgangskode" required/>
+      </div>
+      <button type="submit" class="btn-primary">Log ind</button>
+    </form>
+
+    <p class="auth-footer">
+      Har du ikke en konto? <a th:href="@{/profile/create}">Opret konto</a>
+    </p>
+  </div>
+</div>
+</body>
+</html>
