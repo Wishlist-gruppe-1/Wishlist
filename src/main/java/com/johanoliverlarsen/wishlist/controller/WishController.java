@@ -42,7 +42,7 @@ public class WishController {
         } catch (InvalidWishException ex) {
             model.addAttribute("wish", wish);
             model.addAttribute("formTitle", "Opret ønske");
-            model.addAttribute("formAction", "/profile/list/" + wishListId); //redirect til post endpoint ved submit
+            model.addAttribute("formAction", "/profile/list/" + wishListId + "/wish"); //redirect til post endpoint ved submit
             model.addAttribute("submitLabel", "Opret");
             model.addAttribute("errorMessage", ex.getMessage());
             model.addAttribute("cancelUrl", "/profile/list/" + wishListId);
@@ -51,7 +51,7 @@ public class WishController {
     }
 
 
-    @GetMapping("/wish/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable int wishListId, @PathVariable int id, Model model) {
         Wish wish = wishService.findById(id);
         model.addAttribute("wish", wish);
@@ -63,7 +63,7 @@ public class WishController {
 
     }
 
-    @PostMapping("/wish/{id}")
+    @PostMapping("/{id}")
     public String update(@PathVariable int wishListId, @PathVariable int id, @ModelAttribute Wish wish, Model model) {
         try {
             wishService.update(id, wish);
@@ -80,14 +80,14 @@ public class WishController {
         }
     }
 
-    @GetMapping("/wish/{id}")
+    @GetMapping("/{id}")
     public String detail(@PathVariable int wishListId, @PathVariable int id, Model model) {
         model.addAttribute("wish", wishService.findById(id));
         model.addAttribute("wishListId", wishListId);
         return "wishes/wish-detail";
     }
 
-    @PostMapping("/wish/{id}/delete")
+    @PostMapping("/{id}/delete")
     public String delete(@PathVariable int wishListId, @PathVariable int id) {
         wishService.deleteById(id);
         return "redirect:/profile/list/" + wishListId;

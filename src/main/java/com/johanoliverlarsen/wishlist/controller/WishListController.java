@@ -112,6 +112,11 @@ public class WishListController {
         wishListService.deleteById(id);
         return "redirect:/profile/list";
     }
+
+    @GetMapping("/{id}")
+    public String viewWishList(@PathVariable int id) {
+        return "redirect:/profile/list/" + id + "/wish";
+    }
 //tihi
 
 }

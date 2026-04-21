@@ -17,7 +17,7 @@
             <p class="description" th:if="${wishlist != null and wishlist.description != null}" th:text="${wishlist.description}">Beskrivelse</p>
 
             <div class="sidebar-actions">
-                <a th:href="@{/profile/list/__${wishListId}__/create-wish}" class="btn-primary">Tilføj ønske</a>
+                <a th:href="@{/profile/list/__${wishListId}__/wish/create-wish}" class="btn-primary">Tilføj ønske</a>
                 <a th:href="@{/profile/list/__${wishListId}__/edit}" class="btn-secondary">Rediger liste</a>
                 <form th:action="@{/profile/list/__${wishListId}__/delete}" method="post">
                     <button type="submit" class="btn-danger"
