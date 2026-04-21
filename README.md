@@ -27,6 +27,7 @@ Projektet er i en alpha udgave med et ambitiøs mål om at engang komme ud i den
 ## Værktøjer
 ![figma|87](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 ![intellij](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+![Penpot](https://img.shields.io/badge/penpot-%23FFFFFF.svg?style=for-the-badge&logo=penpot&logoColor=black)
 ![Claude](https://img.shields.io/badge/Claude-D97757?style=for-the-badge&logo=claude&logoColor=white)
 ## Installation
 
