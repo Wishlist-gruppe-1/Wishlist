@@ -55,10 +55,6 @@ public class WishListRepository {
             return ps;
         }, wishListRowMapper);
 
-        if (wishLists.isEmpty()) {
-            throw new WishListNotFoundException(profileId);
-        }
-
         return wishLists;
     }
 

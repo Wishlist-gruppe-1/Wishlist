@@ -58,7 +58,7 @@ public class WishListController {
 
         try{
             wishListService.create(wishList, profileId);
-            return "redirect:/wishlists";
+            return "redirect:/profile/list";
 
         }catch (InvalidWishListException ex) {
             model.addAttribute("wishlist", wishList);
@@ -93,7 +93,7 @@ public class WishListController {
 
         try{
             wishListService.update(id,wishList);
-            return "redirect:/wishlists/";
+            return "redirect:/profile/list";
         }catch(InvalidWishListException ex) {
             wishList.setWishListId(id);
             model.addAttribute("wishlist", wishList);
@@ -111,7 +111,7 @@ public class WishListController {
             return "redirect:/login";
         }
         wishListService.deleteById(id);
-        return "redirect:/wishlists/";
+        return "redirect:/profile/list";
     }
 //tihi
 

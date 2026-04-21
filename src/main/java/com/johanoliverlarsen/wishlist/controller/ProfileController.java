@@ -51,7 +51,7 @@ public class ProfileController {
     public String create(@ModelAttribute Profile profile, Model model) {
         try {
             profileService.create(profile);
-            return "redirect:/profil";
+            return "redirect:/profile";
         } catch (InvalidProfileException | DuplicateProfileException ex) {
             model.addAttribute("profile", profile);
             model.addAttribute("formTitle", "Opret profil");
@@ -78,7 +78,7 @@ public class ProfileController {
     public String update(@PathVariable int id, @ModelAttribute Profile profile, Model model) {
         try {
             profileService.update(id, profile);
-            return "redirect:/profil";
+            return "redirect:/profile";
         } catch (InvalidProfileException | DuplicateProfileException ex) {
             profile.setProfileId(id);
             model.addAttribute("profile", profile);
@@ -94,7 +94,7 @@ public class ProfileController {
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable int id) {
         profileService.deleteById(id);
-        return "redirect:/profil";
+        return "redirect:/profile";
     }
 }
 
