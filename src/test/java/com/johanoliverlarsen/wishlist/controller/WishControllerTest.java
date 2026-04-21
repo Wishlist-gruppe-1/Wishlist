@@ -39,7 +39,7 @@ public class WishControllerTest {
         when(wishService.findAllByWishListId(1))
                 .thenReturn(List.of(new Wish(1, "Bakken", null, null, null, null, null, null)));
 
-        mockMvc.perform(get("/profile/list/1"))
+        mockMvc.perform(get("/profile/list/1/wish"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishes/wish-list"))
                 .andExpect(model().attributeExists("wishes"));
@@ -48,7 +48,7 @@ public class WishControllerTest {
     // GET /profile/list/{wishListId}/create-wish
     @Test
     void getCreateForm_shouldReturnFormView() throws Exception {
-        mockMvc.perform(get("/profile/list/1/create-wish"))
+        mockMvc.perform(get("/profile/list/1/wish/create-wish"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishes/wish-form"))
                 .andExpect(model().attributeExists("wish"))
@@ -63,7 +63,7 @@ public class WishControllerTest {
         when(wishService.create(any(Wish.class), eq(1)))
                 .thenReturn(new Wish());
 
-        mockMvc.perform(post("/profile/list/1")
+        mockMvc.perform(post("/profile/list/1/wish")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "Bakken")
                 )
@@ -76,7 +76,7 @@ public class WishControllerTest {
         doThrow(new InvalidWishException("Et ønske skal have en titel."))
                 .when(wishService).create(any(Wish.class), eq(1));
 
-        mockMvc.perform(post("/profile/list/1")
+        mockMvc.perform(post("/profile/list/1/wish")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "")
                 )
