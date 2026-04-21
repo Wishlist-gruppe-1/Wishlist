@@ -2,6 +2,7 @@ package com.johanoliverlarsen.wishlist.controller;
 
 import com.johanoliverlarsen.wishlist.exception.InvalidWishListException;
 import com.johanoliverlarsen.wishlist.model.WishList;
+import com.johanoliverlarsen.wishlist.service.ProfileService;
 import com.johanoliverlarsen.wishlist.service.WishListService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class WishListControllerTest {
 
     @MockitoBean
     private WishListService wishListService;
+
+    @MockitoBean
+    private ProfileService profileService;
 
     // Opretter en session med profileId = 1, som simulerer en logget ind bruger
     private MockHttpSession sessionWithProfile() {

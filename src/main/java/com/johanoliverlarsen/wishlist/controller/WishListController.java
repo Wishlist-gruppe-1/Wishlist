@@ -43,7 +43,7 @@ public class WishListController {
 
         model.addAttribute("wishlist", new WishList());
         model.addAttribute("formTitle", "Opret ønskeliste");
-        model.addAttribute("formAction", "/wishlists"); //redirect til post endpoint ved submit
+        model.addAttribute("formAction", "/profile/list");
         model.addAttribute("submitLabel", "Opret");
         return "wishlists/wishlist-form";
     }
