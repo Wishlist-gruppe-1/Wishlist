@@ -3,6 +3,7 @@ import com.johanoliverlarsen.wishlist.exception.DuplicateProfileException;
 import com.johanoliverlarsen.wishlist.exception.InvalidProfileException;
 import com.johanoliverlarsen.wishlist.model.Profile;
 import com.johanoliverlarsen.wishlist.service.ProfileService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class ProfileController {
         model.addAttribute("formAction", "/profile");
         model.addAttribute("submitLabel", "Opret");
 
-        return "profiles/profile-form";
+        return "auth/signup";
     }
 
     @PostMapping
@@ -58,7 +59,7 @@ public class ProfileController {
             model.addAttribute("submitLabel", "Opret");
             model.addAttribute("errorMessage", ex.getMessage());
 
-            return "profiles/profile-form";
+            return "auth/signup";
         }
     }
 

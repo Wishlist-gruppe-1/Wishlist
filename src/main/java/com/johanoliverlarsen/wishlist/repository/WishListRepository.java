@@ -4,6 +4,7 @@ package com.johanoliverlarsen.wishlist.repository;
 import com.johanoliverlarsen.wishlist.exception.WishListNotFoundException;
 import com.johanoliverlarsen.wishlist.model.Wish;
 import com.johanoliverlarsen.wishlist.model.WishList;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -34,28 +35,32 @@ public class WishListRepository {
                 FROM wishlist w
                 WHERE w.wishlist_id = ?
                 """;
-        return jdbcTemplate.queryForObject(sql, wishListRowMapper, id);
+        try {
+            return jdbcTemplate.queryForObject(sql, wishListRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
-//    public List <WishList> findAllByProfileId(int profileId){
-//        String sql = """
-//               SELECT w.wishlist_id, w.title, w.description
-//               FROM wishlist w
-//               WHERE w.profile_id = ?
-//               """;
-//
-//        List<WishList> wishLists = jdbcTemplate.query(connection -> {
-//            var ps = connection.prepareStatement(sql);
-//            ps.setInt(1, profileId);
-//            return ps;
-//        }, wishListRowMapper);
-//
-//        if (wishLists.isEmpty()) {
-//            throw new WishListNotFoundException("Ingen wishlists fundet for profil med id " + profileId);
-//        }
-//
-//        return wishLists;
-//    }
+    public List <WishList> findAllByProfileId(int profileId){
+        String sql = """
+               SELECT w.wishlist_id, w.title, w.description
+               FROM wishlist w
+               WHERE w.profile_id = ?
+               """;
+
+        List<WishList> wishLists = jdbcTemplate.query(connection -> {
+            var ps = connection.prepareStatement(sql);
+            ps.setInt(1, profileId);
+            return ps;
+        }, wishListRowMapper);
+
+        if (wishLists.isEmpty()) {
+            throw new WishListNotFoundException(profileId);
+        }
+
+        return wishLists;
+    }
 
     public WishList insert(WishList wishlist, int profile_id){
         String sql = """

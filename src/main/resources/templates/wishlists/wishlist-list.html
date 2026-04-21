@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mine lister</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+<div class="profile-page">
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="profile-wrapper">
+        <!-- Profile header -->
+        <div class="profile-header">
+            <h1>Profil</h1>
+            <div class="profile-identity">
+                <div class="profile-avatar"
+                     th:text="${profile != null ? #strings.substring(profile.name,0,1) : 'U'}">U</div>
+                <div>
+                    <p class="profile-name" th:text="${profile != null ? profile.name : 'Bruger'}">Bruger</p>
+                    <div class="profile-stats">
+                        <span th:text="${wishlists != null ? wishlists.size() : 0} + ' lister'">0 lister</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lists -->
+        <div class="lists-header">
+            <h2>Mine lister</h2>
+            <a th:href="@{/profile/list/create}" class="btn-primary">Opret ny liste</a>
+        </div>
+        <p class="lists-subtitle">Alle mine ønskeoplevelser</p>
+
+        <div class="lists-grid">
+            <a th:each="list : ${wishlists}"
+               th:href="@{/profile/list/__${list.wishListId}__}"
+               class="list-card">
+                <h3 th:text="${list.title}">Listetitel</h3>
+                <p th:text="${list.description}">Beskrivelse</p>
+            </a>
+            <div class="empty-state" th:if="${wishlists == null or wishlists.isEmpty()}">
+                <p>Du har ingen lister endnu.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div th:replace="~{fragments :: footer}"></div>
+    </footer>
+</div>
+</body>
+</html>

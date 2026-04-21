@@ -2,24 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="${formTitle}">Ønske formular</title>
+    <title th:text="${formTitle}">Liste formular</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"/>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
-</head>
+    </head>
 <body>
 <div class="form-page">
     <div th:replace="~{fragments :: navbar}"></div>
 
     <div class="form-wrapper">
-        <h1 th:text="${formTitle}">Opret ønske</h1>
+        <h1 th:text="${formTitle}">Opret liste</h1>
 
         <div class="error-banner" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-        <form th:action="${formAction}" th:object="${wish}" method="post">
+        <form th:action="${formAction}" th:object="${wishlist}" method="post">
             <div class="field">
                 <label for="title">Titel <span style="color:var(--orange)">*</span></label>
                 <input id="title" type="text" th:field="*{title}" maxlength="50" placeholder="Indtast venligst"/>
-                <p class="field-hint">Maks. 50 tegn</p>
             </div>
 
             <div class="field">
@@ -27,29 +26,9 @@
                 <textarea id="description" th:field="*{description}" maxlength="500" placeholder="Skriv venligst"></textarea>
             </div>
 
-            <div class="field">
-                <label for="location">Lokation</label>
-                <input id="location" type="text" th:field="*{location}" maxlength="200" placeholder="Indtast venligst"/>
-            </div>
-
-            <div class="field">
-                <label for="date">Dato</label>
-                <input id="date" type="date" th:field="*{date}"/>
-            </div>
-
-            <div class="field">
-                <label for="price">Pris (kr)</label>
-                <input id="price" type="number" th:field="*{price}" placeholder="Indtast venligst" min="0" step="0.01"/>
-            </div>
-
-            <div class="field">
-                <label for="url">URL</label>
-                <input id="url" type="text" th:field="*{url}" maxlength="2083" placeholder="https://..."/>
-            </div>
-
             <div class="form-actions">
                 <button type="submit" class="btn-primary" th:text="${submitLabel}">Gem</button>
-                <a th:href="${cancelUrl}" class="btn-secondary">Afbryd</a>
+                <a th:href="@{/profile/list}" class="btn-secondary">Afbryd</a>
             </div>
         </form>
     </div>

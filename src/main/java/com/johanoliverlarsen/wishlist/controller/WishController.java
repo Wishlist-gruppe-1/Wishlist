@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/profile/list")
+@RequestMapping("/profile/list/{wishListId}")
 
 public class WishController {
 
@@ -19,13 +19,13 @@ public class WishController {
         this.wishService = wishService;
     }
 
-    @GetMapping("/{wishListId}")
+    @GetMapping()
     public String list(@PathVariable int wishListId, Model model) {
         model.addAttribute("wishes", wishService.findAllByWishListId(wishListId));
         return "wishes/wish-list";
     }
 
-    @GetMapping("/{wishListId}/create-wish")
+    @GetMapping("/create-wish")
     public String showCreateForm(@PathVariable int wishListId, Model model) {
         model.addAttribute("wish", new Wish());
         model.addAttribute("formTitle", "Opret ønske");
@@ -35,7 +35,7 @@ public class WishController {
         return "wishes/wish-form";
     }
 
-    @PostMapping("/{wishListId}")
+    @PostMapping()
     public String create(@ModelAttribute Wish wish, @PathVariable int wishListId, Model model) {
         try {
             wishService.create(wish, wishListId);
@@ -52,7 +52,7 @@ public class WishController {
     }
 
 
-    @GetMapping("/{wishListId}/wish/{id}/edit")
+    @GetMapping("/wish/{id}/edit")
     public String showEditForm(@PathVariable int wishListId, @PathVariable int id, Model model) {
         Wish wish = wishService.findById(id);
         model.addAttribute("wish", wish);
@@ -64,7 +64,7 @@ public class WishController {
 
     }
 
-    @PostMapping("/{wishListId}/wish/{id}")
+    @PostMapping("/wish/{id}")
     public String update(@PathVariable int wishListId, @PathVariable int id, @ModelAttribute Wish wish, Model model) {
         try {
             wishService.update(id, wish);
@@ -81,7 +81,14 @@ public class WishController {
         }
     }
 
-    @PostMapping("/{wishListId}/wish/{id}/delete")
+    @GetMapping("/wish/{id}")
+    public String detail(@PathVariable int wishListId, @PathVariable int id, Model model) {
+        model.addAttribute("wish", wishService.findById(id));
+        model.addAttribute("wishListId", wishListId);
+        return "wishes/wish-detail";
+    }
+
+    @PostMapping("/wish/{id}/delete")
     public String delete(@PathVariable int wishListId, @PathVariable int id) {
         wishService.deleteById(id);
         return "redirect:/profile/list/" + wishListId;

@@ -5,6 +5,8 @@ public class WishList {
     private String title;
     private String description;
 
+    public WishList() {}
+
     public WishList(Integer wishListId, String title, String description) {
         this.wishListId = wishListId;
         this.title = title;
@@ -21,6 +23,6 @@ public class WishList {
 
     @Override
     public String toString(){
-        return "WishListId: " + wishListId + ", Title: " + title + ", Description: " + description;
+        return "WishListId: " + wishListId + "Title: " + title + ", Description: " + description;
     }
 }
