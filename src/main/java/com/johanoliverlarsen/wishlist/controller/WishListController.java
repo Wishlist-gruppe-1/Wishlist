@@ -81,8 +81,7 @@ public class WishListController {
         model.addAttribute("wishlist", wishList);
         model.addAttribute("formTitle", "Rediger ønskeliste");
         model.addAttribute("formAction",  "/wishlists/" + id);
-        model.addAttribute("submit label", "Opdater");
-        return "wishlists/wishlist-form";
+        model.addAttribute("submitLabel", "Opdater");        return "wishlists/wishlist-form";
     }
 
     @PostMapping("/{id}")

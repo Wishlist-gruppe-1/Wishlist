@@ -95,8 +95,7 @@ public class WishListControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("name", "Min liste"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/wishlists"));
-    }
+                .andExpect(redirectedUrl("/profile/list"));    }
 
     // Verificerer at en ikke-logget ind bruger bliver sendt videre til login
     @Test
@@ -161,8 +160,7 @@ public class WishListControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("name", "Opdateret navn"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/wishlists/"));
-    }
+                .andExpect(redirectedUrl("/profile/list"));    }
 
     // Verificerer at en ikke-logget ind bruger bliver sendt videre til login
     @Test
@@ -199,8 +197,7 @@ public class WishListControllerTest {
         mockMvc.perform(post("/profile/list/5/delete")
                         .session(sessionWithProfile()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/wishlists/"));
-    }
+                .andExpect(redirectedUrl("/profile/list"));    }
 
     // Verificerer at en ikke-logget ind bruger bliver sendt videre til login
     @Test
