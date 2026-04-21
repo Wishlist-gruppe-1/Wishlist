@@ -9,8 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/profile/list/{wishListId}")
-
+@RequestMapping("/profile/list/{wishListId}/wish")
 public class WishController {
 
     private final WishService wishService;
@@ -29,7 +28,7 @@ public class WishController {
     public String showCreateForm(@PathVariable int wishListId, Model model) {
         model.addAttribute("wish", new Wish());
         model.addAttribute("formTitle", "Opret ønske");
-        model.addAttribute("formAction", "/profile/list/" + wishListId); //redirect til post endpoint ved submit
+        model.addAttribute("formAction", "/profile/list/" + wishListId + "/wish");
         model.addAttribute("submitLabel", "Opret");
         model.addAttribute("cancelUrl", "/profile/list/" + wishListId);
         return "wishes/wish-form";

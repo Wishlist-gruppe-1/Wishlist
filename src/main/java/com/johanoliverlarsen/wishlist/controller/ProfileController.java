@@ -51,7 +51,7 @@ public class ProfileController {
     public String create(@ModelAttribute Profile profile, Model model) {
         try {
             profileService.create(profile);
-            return "redirect:/profile";
+            return "redirect:/profile/list";
         } catch (InvalidProfileException | DuplicateProfileException ex) {
             model.addAttribute("profile", profile);
             model.addAttribute("formTitle", "Opret profil");
