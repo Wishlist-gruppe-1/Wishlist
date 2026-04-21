@@ -3,6 +3,7 @@ package com.johanoliverlarsen.wishlist.service;
 import com.johanoliverlarsen.wishlist.exception.InvalidWishException;
 import com.johanoliverlarsen.wishlist.exception.WishNotFoundException;
 import com.johanoliverlarsen.wishlist.model.Wish;
+import com.johanoliverlarsen.wishlist.repository.WishListRepository;
 import com.johanoliverlarsen.wishlist.repository.WishRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +21,14 @@ import static org.mockito.Mockito.when;
 class WishServiceTest {
 
     @Mock
+    private WishListRepository wishListRepository;
+
+    @Mock
     private WishRepository wishRepository;
 
     @InjectMocks
     private WishService wishService;
+
 
     @Test
     void create_ThrowsInvalidWishException_WhenTitleIsTooLong() {
