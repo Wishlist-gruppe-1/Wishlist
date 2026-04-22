@@ -8,7 +8,7 @@ Projektet er i en alpha udgave med et ambitiøs mål om at engang komme ud i den
 - [Features](#features)
 - [Teknologier](#teknologier)
 - [Værktøjer](#værktøjer)
-- [Modeller & Diagrammer] (#Modeller & Diagrammer)
+- [Modeller & Diagrammer](#Modeller&Diagrammer)
 - [Installation](#installation)
 - [Brug](#brug)
 - [Bidrag](#bidrag)
@@ -31,8 +31,20 @@ Projektet er i en alpha udgave med et ambitiøs mål om at engang komme ud i den
 ![Penpot](https://img.shields.io/badge/penpot-%23FFFFFF.svg?style=for-the-badge&logo=penpot&logoColor=black)
 ![Claude](https://img.shields.io/badge/Claude-D97757?style=for-the-badge&logo=claude&logoColor=white)
 ## Modeller & Diagrammer
+
+### Klasse diagram før implamintering 
+skriv her
+gennerelt udkast af CRUD og udvidet MVC (layered acetectur) GRASP
+
 <img width="6261" height="3373" alt="Wishlist - Klassediagram" src="https://github.com/user-attachments/assets/173e2137-0eed-4eee-ae7f-7a391860ab1c" />
-[Åben i lucidchart] (https://lucid.app/lucidchart/5ad35a05-2998-4c85-930f-d1cba19accae/edit?invitationId=inv_41ea410b-dedf-4388-b45c-8520290a1703&page=HyMMb21TK6Mh#)
+[Åben i lucidchart](https://lucid.app/lucidchart/5ad35a05-2998-4c85-930f-d1cba19accae/edit?invitationId=inv_41ea410b-dedf-4388-b45c-8520290a1703&page=HyMMb21TK6Mh#)
+
+
+<img width="592" height="411" alt="4e7609d8-99ff-41b6-a96c-6d0bc5778877" src="https://github.com/user-attachments/assets/087badee-db7e-4f20-b27f-409cedf48a2b" />
+
+[Åben i lucidchart](https://lucid.app/lucidchart/fdcd6789-f437-4ef4-abed-ded161da752c/edit?viewport_loc=1108%2C-231%2C1987%2C1145%2CHyMMb21TK6Mh&invitationId=inv_7616146a-ee9c-4d43-9881-2161bd95d854)
+
+<img width="1163" height="867" alt="86e4fd30-79ae-444e-8f88-021c79dcbf0c" src="https://github.com/user-attachments/assets/c750c579-21ac-4252-9809-7bf71816ee69" />
 
 ## Installation
 
