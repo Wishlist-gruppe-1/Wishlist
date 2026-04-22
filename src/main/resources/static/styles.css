@@ -64,7 +64,11 @@ nav {
 .nav-link:hover {
     color: var(--orange);
 }
-
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 /* ── HERO ── */
 .hero {
     background: var(--teal);
