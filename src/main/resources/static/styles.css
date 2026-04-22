@@ -376,12 +376,6 @@ footer {
     .footer-brand { grid-column: 1 / -1; }
 }
 
-/* =============================================================
-   pages.css  –  page-specific styles for Wish2Gather
-   Import this alongside styles.css in every template.
-   ============================================================= */
-
-
 /* -------------------------------------------------------------
    SHARED: auth, form, wishlist, wish-list, wish-detail pages
    ------------------------------------------------------------- */
