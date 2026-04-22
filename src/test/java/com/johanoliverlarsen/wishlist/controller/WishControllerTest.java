@@ -1,7 +1,9 @@
 package com.johanoliverlarsen.wishlist.controller;
 
 import com.johanoliverlarsen.wishlist.model.Wish;
+import com.johanoliverlarsen.wishlist.model.WishList;
 import com.johanoliverlarsen.wishlist.repository.WishRepository;
+import com.johanoliverlarsen.wishlist.service.WishListService;
 import com.johanoliverlarsen.wishlist.service.WishService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +35,24 @@ public class WishControllerTest {
     @MockitoBean
     private WishService wishService;
 
+    @MockitoBean
+    private WishListService wishListService;
+
     // GET /profile/list/{wishListId}
     @Test
     void getList_shouldReturnWishListView() throws Exception {
         when(wishService.findAllByWishListId(1))
                 .thenReturn(List.of(new Wish(1, "Bakken", null, null, null, null, null, null)));
 
+        when(wishListService.findById(1))
+                .thenReturn(new WishList(1, "Test liste", "Beskrivelse"));
+
         mockMvc.perform(get("/profile/list/1/wish"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishes/wish-list"))
-                .andExpect(model().attributeExists("wishes"));
+                .andExpect(model().attributeExists("wishes"))
+                .andExpect(model().attributeExists("wishlist"));
     }
-
     // GET /profile/list/{wishListId}/create-wish
     @Test
     void getCreateForm_shouldReturnFormView() throws Exception {
