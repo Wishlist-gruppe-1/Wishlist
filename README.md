@@ -55,8 +55,11 @@ LoginController og HomeController er nu implementeret. LoginController har fået
 
 [![KlassediagramFør](https://github.com/user-attachments/assets/47c09b9a-6d82-4fc3-afa1-d0d12e962d20)]([https://lucid.app/lucidchart/fdcd6789-f437-4ef4-abed-ded161da752c/edit?viewport_loc=1108%2C-231%2C1987%2C1145%2CHyMMb21TK6Mh&invitationId=inv_7616146a-ee9c-4d43-9881-2161bd95d854](https://lucid.app/lucidchart/9f28b085-9fb7-4f8a-ae00-c1e0b4bbc256/edit?invitationId=inv_7f52ff07-aeb6-40f7-aee4-e6678a658731&page=0_0#))
 
+### Figma prototype
 
-
+UI / UX er udarbejdet i Figma først mhb. på programmets første MVP. 
+[Figma prototype](https://www.figma.com/site/lziT6ExBraO2ybOTYA8cgX/Wish2Gather?node-id=0-1&t=natwvYlfVXQUtl8g-1)
+Dette har været flyttet i PenPot vha. imports for at få genereret relevant HTML+CSS.
 
 ## Installation
 
