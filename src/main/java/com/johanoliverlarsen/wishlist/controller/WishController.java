@@ -1,8 +1,8 @@
 package com.johanoliverlarsen.wishlist.controller;
 
-import com.johanoliverlarsen.wishlist.exception.DuplicateProfileException;
 import com.johanoliverlarsen.wishlist.exception.InvalidWishException;
 import com.johanoliverlarsen.wishlist.model.Wish;
+import com.johanoliverlarsen.wishlist.service.WishListService;
 import com.johanoliverlarsen.wishlist.service.WishService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +13,18 @@ import org.springframework.web.bind.annotation.*;
 public class WishController {
 
     private final WishService wishService;
+    private final WishListService wishListService;
 
-    public WishController(WishService wishService) {
+    public WishController(WishService wishService, WishListService wishListService) {
         this.wishService = wishService;
+        this.wishListService = wishListService;
     }
 
     @GetMapping()
     public String list(@PathVariable int wishListId, Model model) {
         model.addAttribute("wishes", wishService.findAllByWishListId(wishListId));
+        model.addAttribute("wishlist", wishListService.findById(wishListId)); // find ønskeliste
+        model.addAttribute("wishListId", wishListId); // tilføj til vores model
         return "wishes/wish-list";
     }
 
