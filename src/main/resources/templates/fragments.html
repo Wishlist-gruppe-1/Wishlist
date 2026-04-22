@@ -12,6 +12,19 @@
             <circle cx="18" cy="14" r="3" fill="white"/>
         </svg>
     </a>
+    <!-- PROFILE - hvis profil er aktiv, gå ind på wishlist-list.html -->
+    <a th:if="${session.profileId != null}"
+       th:href="@{/profile/list}"
+       class="nav-link">
+        Profil
+    </a>
+    <!-- PROFILE - hvis profil er inaktiv, gå ind på login.html -->
+    <a th:if="${session.profileId == null}"
+       th:href="@{/login}"
+       class="nav-link">
+        Profil
+    </a>
+
     <button class="nav-search" aria-label="Søg">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -19,6 +32,7 @@
             <path d="M21 21l-4.35-4.35"/>
         </svg>
     </button>
+
 </nav>
 
 <!-- FOOTER FRAGMENT -->
