@@ -57,7 +57,6 @@
 
             <div class="empty-state" th:if="${wishes == null or wishes.isEmpty()}">
                 <p>Ingen ønsker endnu — tilføj det første!</p>
-                <a th:href="@{/profile/list/__${wishListId}__/create-wish}" class="btn-primary">Tilføj ønske</a>
             </div>
         </div>
     </div>
