@@ -52,6 +52,19 @@ nav {
 }
 .nav-search:hover { background: var(--sand); }
 
+.nav-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    text-decoration: none;
+    margin-right: 16px;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--orange);
+}
+
 /* ── HERO ── */
 .hero {
     background: var(--teal);
