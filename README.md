@@ -1,4 +1,7 @@
 # Wish2Gather
+```
+[Link til website](https://wish2gather-e2a6g6exhrf6gyfr.swedencentral-01.azurewebsites.net/)
+```
 
 Vi har lavet en platform til at facilitere samvær og opfordre folk til at komme ud i verden. Ligesom på Ønskeskyen kan du tilføje ønsker til dine lister, men her er vores platform oplagt til diverse begivenheder, kurser, events og hvad end hjertet begærer af ønskeoplevelser. 
 
