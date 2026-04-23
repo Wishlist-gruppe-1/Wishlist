@@ -128,6 +128,7 @@ nav {
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
 }
 .btn-primary:hover { background: var(--orange-light); transform: translateY(-1px); }
 
