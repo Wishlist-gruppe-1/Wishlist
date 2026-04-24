@@ -11,6 +11,7 @@ import com.johanoliverlarsen.wishlist.repository.WishRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class WishService {
         }
     }
 
+    @Transactional
     public Wish create(Wish wish, int wishListId) {
         validateWish(wish);
         validateId(wishListId);
@@ -68,6 +70,7 @@ public class WishService {
         return wishRepository.findAllTags();
     }
 
+    @Transactional
     public void update(int id, Wish wish) {
         validateId(id);
         validateWish(wish);

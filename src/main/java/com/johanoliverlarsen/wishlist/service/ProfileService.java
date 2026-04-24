@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -59,6 +61,7 @@ public class ProfileService {
 
     }
 
+    @Transactional
     public Profile create(Profile profile) {
         validateProfil(profile);
         try {
@@ -70,6 +73,7 @@ public class ProfileService {
         }
     }
 
+    @Transactional
     public Profile update(int id, Profile profile) {
         validateId(id);
         validateProfil(profile);

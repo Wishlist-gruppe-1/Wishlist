@@ -9,6 +9,7 @@ import com.johanoliverlarsen.wishlist.model.WishList;
 import com.johanoliverlarsen.wishlist.repository.WishListRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,8 +48,7 @@ public class WishListService {
 
     }
 
-
-
+    @Transactional
     public WishList create(WishList wishList, int profileId) {
       validateWishList(wishList);
       validateId(profileId);
@@ -61,7 +61,7 @@ public class WishListService {
 
     }
 
-
+    @Transactional
     public void update(int id, WishList wishList) {
         validateId(id);
         validateWishList(wishList);
